@@ -37,7 +37,7 @@ export class UserController {
       ) {
         throw error;
       }
-      throw new BadRequestException('Ocurrió un error al crear el usuario.');
+      throw new BadRequestException('Ocurrió un error al crear el usuario');
     }
   }
 
