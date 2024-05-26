@@ -1,0 +1,42 @@
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import {
+  DATABASE_HOST,
+  DATABASE_NAME,
+  DATABASE_PASSWORD,
+  DATABASE_PORT,
+  DATABASE_USERNAME,
+} from './constans/constans';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>(DATABASE_HOST), // Cambia esto a tu host de PostgreSQL
+        port: parseInt(config.get<string>(DATABASE_PORT), 10), // Puerto de PostgreSQL
+        username: config.get<string>(DATABASE_USERNAME), // Cambia esto a tu usuario de Postgr eSQL
+        password: config.get<string>(DATABASE_PASSWORD), // Cambia esto a tu contraseña de PostgreSQL
+        database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
+        entities: [__dirname + '/**/**/*entity{.ts,.js}'],
+        synchronize: true,
+      }),
+    }),
+
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    UserModule,
+    TiposIdentifcadoresModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}

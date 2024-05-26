@@ -1,0 +1,22 @@
+CREAR USUARIOS
+{
+  "username": "uniqueuser1",
+  "fecha_creacion": "2024-05-25",
+  "passwordU": "password123",
+  "estado_usuario": "APR",
+  "estado_cuenta": "ACT",
+  "fecha_ultima_conexion": "2023-05-22",
+  "person": {
+    "nombre": "Ismael",
+    "apellido": "Gavilanez",
+    "direccion": "456 Another St",
+    "celular": "0987654",
+    "telefono": "12345",
+    "correo": "janes@example.com",
+    "fechaNacimiento": "1985-06-15",
+    "identificacion": "7890156846",
+    "id_tipo_identificacion": 2
+  }
+}
+
+BASE DE DATOS
