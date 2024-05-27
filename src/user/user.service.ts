@@ -15,7 +15,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PersonEntity)
     private readonly personRepository: Repository<PersonEntity>,
-  ) {}
+  ) { }
 
   async getAllUsers() {
     const users = await this.userRepository.find({
@@ -43,21 +43,26 @@ export class UserService {
       );
     }
 
-    // Verificar si la persona ya existe basada en el correo
-    let savedPerson = await this.personRepository.findOne({
-      where: { identificacion: person.identificacion },
-    });
-    if (!savedPerson) {
-      const newPerson = this.personRepository.create(person);
-      savedPerson = await this.personRepository.save(newPerson);
+    // Verifica si el usuario ya existe
+    if (await this.userRepository.findOne({ where: { username: createUserDto.username } })) {
+      throw new BadRequestException(
+        'El usuario ya existe.'
+      );
     }
 
-    // Crear el usuario con la persona existente o recién creada
-    const user = this.userRepository.create({
-      ...createUserDto,
-      person: savedPerson,
-    });
-    return await this.userRepository.save(user);
+    // Verifica si la persona ya existe basada en la identificacion
+    const personaExiste = await this.personRepository.findOne({
+      where: { identificacion: person.identificacion }
+    })
+
+    // Si la persona no existe entonces se guarda el usuario
+    if (!personaExiste) {
+      return await this.userRepository.save(createUserDto);
+    }
+
+    throw new BadRequestException(
+      `Esta persona ya esta enlazada a otro usuario.`
+    );
   }
 
   async updateUser(
@@ -98,6 +103,7 @@ export class UserService {
       where: { id_usuario: id },
       relations: ['person'],
     });
+
     if (!user) {
       throw new NotFoundException('usuario no encontrado');
     }
