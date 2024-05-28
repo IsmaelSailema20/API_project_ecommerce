@@ -12,6 +12,7 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
 } from './constans/constans';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import {
     }),
     UserModule,
     TiposIdentifcadoresModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
