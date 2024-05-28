@@ -20,7 +20,7 @@ export class UserEntity {
   fecha_creacion: Date;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
-  passwordU: string;
+  password: string;
 
   @Column({ type: 'varchar', length: 3, nullable: false })
   estado_usuario: string;
@@ -33,6 +33,6 @@ export class UserEntity {
 
   @OneToOne(() => PersonEntity, (person) => person.user, { cascade: true })
   @JoinColumn({ name: 'id_persona' })
-  person: PersonEntity; // Referencia a la entidad PersonaEntity
+  person: PersonEntity;
 
 }

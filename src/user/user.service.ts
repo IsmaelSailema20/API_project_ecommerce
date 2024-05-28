@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PersonEntity, UserEntity } from './entities';
 import { Repository } from 'typeorm';
 import { CreateUserDto, EditUserDto } from './dtos';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -17,14 +18,14 @@ export class UserService {
     private readonly personRepository: Repository<PersonEntity>,
   ) { }
 
-  async getAllUsers() {
+  async getAll() {
     const users = await this.userRepository.find({
       relations: ['person'],
     });
     return { users };
   }
 
-  async getOneUser(id: number): Promise<UserEntity> {
+  async getById(id: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: { id_usuario: id },
       relations: ['person'],
@@ -57,6 +58,8 @@ export class UserService {
 
     // Si la persona no existe entonces se guarda el usuario
     if (!personaExiste) {
+      const salt = await bcrypt.genSalt();
+      createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
       return await this.userRepository.save(createUserDto);
     }
 
@@ -110,4 +113,9 @@ export class UserService {
 
     await this.userRepository.remove(user);
   }
+
+  async getByUsername(username: string): Promise<UserEntity> {
+    return await this.userRepository.findOneBy({ username });
+  }
+
 }

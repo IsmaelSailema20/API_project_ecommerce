@@ -15,14 +15,15 @@ import { CreateUserDto, EditUserDto } from './dtos';
 @Controller('users')
 export class UserController {
   constructor(private readonly usersService: UserService) {}
+
   @Get()
-  async getAllUsers() {
-    return this.usersService.getAllUsers();
+  async getAll() {
+    return this.usersService.getAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.usersService.getOneUser(id);
+  async getById(@Param('id') id: number) {
+    return this.usersService.getById(id);
   }
 
   @Post()
