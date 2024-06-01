@@ -13,6 +13,9 @@ import {
   DATABASE_USERNAME,
 } from './constans/constans';
 import { AuthModule } from './auth/auth.module';
+import { ProductosModule } from './productos/productos.module';
+import { CategoriasModule } from './categorias/categorias.module';
+import { MarcasModule } from './marcas/marcas.module';
 
 @Module({
   imports: [
@@ -36,7 +39,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     TiposIdentifcadoresModule,
-    AuthModule
+    AuthModule,
+    ProductosModule,
+    CategoriasModule,
+    MarcasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

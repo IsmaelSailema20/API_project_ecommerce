@@ -22,7 +22,11 @@ export class TiposIdentifcadoresController {
   async createTiposIdentf(@Body() createTiposIdentfDto: CreateTipoIdentfDto) {
     const newTipoIndentf =
       await this.tiposIdentfService.createTipoIdentif(createTiposIdentfDto);
-    return { message: 'Tipo De Identificacion creado', newTipoIndentf };
+    if (newTipoIndentf.success) {
+      return { message: 'Tipo De Identificacion creado', newTipoIndentf };
+    } else {
+      return { message: newTipoIndentf.message };
+    }
   }
 
   @Put(':id')
@@ -34,6 +38,10 @@ export class TiposIdentifcadoresController {
       id,
       updateTiposIdentfDto,
     );
-    return { message: 'Tipo Identificacion Actualizado', updateTipoIdentif };
+    if (updateTipoIdentif.success) {
+      return { message: 'Tipo Identificacion Actualizado', updateTipoIdentif };
+    } else {
+      return { message: updateTipoIdentif.message };
+    }
   }
 }
