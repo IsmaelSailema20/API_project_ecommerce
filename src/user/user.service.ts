@@ -6,6 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { PersonEntity, UserEntity } from './entities';
 import { Repository } from 'typeorm';
+import { RolesEntity } from 'src/roles/entities/roles.entity';
+import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
 import { CreateUserDto, EditUserDto } from './dtos';
 import * as bcrypt from 'bcrypt';
 
@@ -16,7 +18,11 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PersonEntity)
     private readonly personRepository: Repository<PersonEntity>,
-  ) { }
+    @InjectRepository(RolesEntity)
+    private readonly rolesRepository: Repository<RolesEntity>,
+    @InjectRepository(RolesUsuarioEntity)
+    private readonly rolesUsuarioRepository: Repository<RolesUsuarioEntity>,
+  ) {}
 
   async getAll() {
     const users = await this.userRepository.find({
@@ -45,16 +51,18 @@ export class UserService {
     }
 
     // Verifica si el usuario ya existe
-    if (await this.userRepository.findOne({ where: { username: createUserDto.username } })) {
-      throw new BadRequestException(
-        'El usuario ya existe.'
-      );
+    if (
+      await this.userRepository.findOne({
+        where: { username: createUserDto.username },
+      })
+    ) {
+      throw new BadRequestException('El usuario ya existe.');
     }
 
     // Verifica si la persona ya existe basada en la identificacion
     const personaExiste = await this.personRepository.findOne({
-      where: { identificacion: person.identificacion }
-    })
+      where: { identificacion: person.identificacion },
+    });
 
     // Si la persona no existe entonces se guarda el usuario
     if (!personaExiste) {
@@ -64,7 +72,7 @@ export class UserService {
     }
 
     throw new BadRequestException(
-      `Esta persona ya esta enlazada a otro usuario.`
+      `Esta persona ya esta enlazada a otro usuario.`,
     );
   }
 
@@ -117,5 +125,4 @@ export class UserService {
   async getByUsername(username: string): Promise<UserEntity> {
     return await this.userRepository.findOneBy({ username });
   }
-
 }

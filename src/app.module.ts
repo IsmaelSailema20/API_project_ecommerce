@@ -13,6 +13,8 @@ import {
   DATABASE_USERNAME,
 } from './constans/constans';
 import { AuthModule } from './auth/auth.module';
+import { RolesModule } from './roles/roles.module';
+import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
 
 @Module({
   imports: [
@@ -36,7 +38,9 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     TiposIdentifcadoresModule,
-    AuthModule
+    AuthModule,
+    RolesModule,
+    RolesUsuarioModule,
   ],
   controllers: [AppController],
   providers: [AppService],
