@@ -13,8 +13,14 @@ import {
   DATABASE_USERNAME,
 } from './constans/constans';
 import { AuthModule } from './auth/auth.module';
+
+import { ProductosModule } from './productos/productos.module';
+import { CategoriasModule } from './categorias/categorias.module';
+import { MarcasModule } from './marcas/marcas.module';
+
 import { RolesModule } from './roles/roles.module';
 import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
+
 
 @Module({
   imports: [
@@ -39,8 +45,14 @@ import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
     UserModule,
     TiposIdentifcadoresModule,
     AuthModule,
+
+    ProductosModule,
+    CategoriasModule,
+    MarcasModule,
+
     RolesModule,
     RolesUsuarioModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
