@@ -9,7 +9,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async validateUser({ username, password }: AuthPayloadDTO) {
     const findUser = await this.userService.getByUsername(username);
@@ -19,8 +19,8 @@ export class AuthService {
     }
 
     const isMatch = await bcrypt.compare(password, findUser.password);
-    
-    const {password: ps, person, ...user} = findUser;
+
+    const { password: ps, person, ...user } = findUser;
 
     if (isMatch) {
       return this.jwtService.sign(user); // Firmar y retornar el JWT
