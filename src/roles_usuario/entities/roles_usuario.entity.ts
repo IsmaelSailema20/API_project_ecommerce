@@ -12,14 +12,14 @@ export class RolesUsuarioEntity {
   @PrimaryGeneratedColumn()
   id_rol_usuario: number;
 
-  @Column({ name: 'estado', type: 'number', nullable: false, length: 4 })
+  @Column({ name: 'estado', type: 'varchar', nullable: false, length: 4 })
   estado: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.roles)
-  @JoinColumn({ name: 'ID_user' })
-  ID_user: UserEntity;
+  @ManyToOne(() => UserEntity, (user) => user.rolesUser)
+  @JoinColumn({ name: 'ID_usuario' })
+  ID_usuario: UserEntity;
 
   @ManyToOne(() => RolesEntity, (roles) => roles.id_rol)
-  @JoinColumn({ name: 'ID_roles' })
-  ID_roles: RolesEntity;
+  @JoinColumn({ name: 'ID_rol' })
+  ID_rol: RolesEntity;
 }

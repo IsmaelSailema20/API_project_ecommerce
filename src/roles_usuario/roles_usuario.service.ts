@@ -1,10 +1,5 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateRolesUsuario } from './dtos/create-roles-usuario.dtos';
 import { RolesUsuarioEntity } from './entities/roles_usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -16,13 +11,15 @@ export class RolesUsuarioService {
   ) {}
 
   async getAllRolesUser() {
-    return await this.rolesUserRepository.find();
+    return await this.rolesUserRepository.find({
+      relations: ['ID_usuario', 'ID_rol'],
+    });
   }
 
   async getRolesUser(id: number) {
     const rolesUser = await this.rolesUserRepository.findOne({
-      where: { id },
-      relations: ['RolesUsuarioEntity'],
+      where: { id_rol_usuario: id },
+      relations: ['ID_usuario', 'ID_rol'],
     });
     if (!rolesUser) {
       throw new NotFoundException('No se encontraron los roles del usuario');

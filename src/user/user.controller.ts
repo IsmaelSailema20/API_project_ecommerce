@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, EditUserDto } from './dtos';
-
 @Controller('users')
 export class UserController {
   constructor(private readonly usersService: UserService) {}

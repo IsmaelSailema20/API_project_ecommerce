@@ -2,14 +2,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PersonEntity } from './person.entity';
-import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
 
 @Entity('users')
@@ -41,21 +38,9 @@ export class UserEntity {
   person: PersonEntity;
 
   //RELACION CON LA TABLA DE ROLES_USUARIOS
-  @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.ID_user)
+  @OneToMany(
+    () => RolesUsuarioEntity,
+    (rolesUsuario) => rolesUsuario.ID_usuario,
+  )
   rolesUser: RolesUsuarioEntity[];
-
-  //RELACION CON LA TABLA DE ROLES
-  @ManyToMany(() => RolesEntity, (roles) => roles.users)
-  @JoinTable({
-    name: 'roles_usuarios',
-    joinColumn: {
-      name: 'ID_user',
-      referencedColumnName: 'id_usuario',
-    },
-    inverseJoinColumn: {
-      name: 'ID_rol',
-      referencedColumnName: 'id_rol',
-    },
-  })
-  roles: UserEntity[];
 }
