@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RolesUsuarioService } from './roles_usuario.service';
 
 @ApiTags('RolesUsuarioController')
-@Controller('roles-usuario')
+@Controller('rolesUsuario')
 export class RolesUsuarioController {
   constructor(private readonly rolesUsuarioService: RolesUsuarioService) {}
   @Get()

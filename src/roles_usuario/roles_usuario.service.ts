@@ -11,13 +11,15 @@ export class RolesUsuarioService {
   ) {}
 
   async getAllRolesUser() {
-    return await this.rolesUserRepository.find();
+    return await this.rolesUserRepository.find({
+      relations: ['ID_usuario', 'ID_rol'],
+    });
   }
 
   async getRolesUser(id: number) {
     const rolesUser = await this.rolesUserRepository.findOne({
       where: { id_rol_usuario: id },
-      relations: ['RolesUsuarioEntity'],
+      relations: ['ID_usuario', 'ID_rol'],
     });
     if (!rolesUser) {
       throw new NotFoundException('No se encontraron los roles del usuario');
