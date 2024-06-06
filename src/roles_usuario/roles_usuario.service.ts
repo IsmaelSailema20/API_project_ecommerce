@@ -1,10 +1,5 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateRolesUsuario } from './dtos/create-roles-usuario.dtos';
 import { RolesUsuarioEntity } from './entities/roles_usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,7 +16,7 @@ export class RolesUsuarioService {
 
   async getRolesUser(id: number) {
     const rolesUser = await this.rolesUserRepository.findOne({
-      where: { id },
+      where: { id_rol_usuario: id },
       relations: ['RolesUsuarioEntity'],
     });
     if (!rolesUser) {

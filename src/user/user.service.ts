@@ -41,8 +41,7 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { person } = createUserDto;
-
+    const { id_rol, person } = createUserDto;
     // Verificar si la información de la persona está incluida en el DTO
     if (!person) {
       throw new BadRequestException(
@@ -51,29 +50,47 @@ export class UserService {
     }
 
     // Verifica si el usuario ya existe
-    if (
-      await this.userRepository.findOne({
-        where: { username: createUserDto.username },
-      })
-    ) {
+    const userExists = await this.userRepository.findOne({
+      where: { username: createUserDto.username },
+    });
+    if (userExists) {
       throw new BadRequestException('El usuario ya existe.');
     }
 
-    // Verifica si la persona ya existe basada en la identificacion
+    // Verifica si la persona ya existe basada en la identificación
     const personaExiste = await this.personRepository.findOne({
       where: { identificacion: person.identificacion },
     });
 
-    // Si la persona no existe entonces se guarda el usuario
-    if (!personaExiste) {
-      const salt = await bcrypt.genSalt();
-      createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
-      return await this.userRepository.save(createUserDto);
+    const rolExiste = await this.rolesRepository.findOneBy({ id_rol });
+    if (!rolExiste) {
+      throw new NotFoundException('El rol no existe en los registros');
     }
 
-    throw new BadRequestException(
-      `Esta persona ya esta enlazada a otro usuario.`,
-    );
+    let newUser;
+    if (!personaExiste) {
+      // Si la persona no existe entonces se guarda el usuario
+      const salt = await bcrypt.genSalt();
+      createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
+      createUserDto.id_rol = rolExiste.id_rol;
+      newUser = await this.userRepository.save(createUserDto);
+    } else {
+      // Si la persona ya existe, maneja este caso como corresponda
+      throw new BadRequestException('La persona ya existe.');
+    }
+
+    // Crear una instancia de la entidad RolesUsuarios
+    const rolesUsuario = new RolesUsuarioEntity();
+    rolesUsuario.ID_rol = rolExiste;
+    rolesUsuario.ID_usuario = newUser;
+    rolesUsuario.estado = 'act';
+
+    // Guardar la relación en la tabla de rompimiento
+    await this.rolesUsuarioRepository.save(rolesUsuario);
+
+    return newUser;
+
+    return newUser;
   }
 
   async updateUser(
