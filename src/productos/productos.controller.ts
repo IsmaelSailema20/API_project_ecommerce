@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductosDto } from './dtos/create-productos.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -12,7 +21,18 @@ export class ProductosController {
   async getAllProducts() {
     return this.productosService.getAllProducts();
   }
-
+  @Get('estadoPro')
+  async getProductsByEstado(@Query('estadoPro') estado: string) {
+    return this.productosService.getProductosAct(estado);
+  }
+  @Get('stock/:id')
+  async getStockProducto(@Param('id') id: number) {
+    return this.productosService.getStrockProduc(id);
+  }
+  @Get('totalPCategoria')
+  async getTotalProduCategoria() {
+    return this.productosService.getCantidadProductosByCategoria();
+  }
   @Get(':id')
   async getOneProduct(@Param('id') id: number) {
     return this.productosService.getOneProducts(id);
@@ -45,6 +65,27 @@ export class ProductosController {
       };
     } else {
       return { message: updateProduct.message };
+    }
+  }
+
+  @Patch(':id/estado')
+  async updateProductEstado(
+    @Param('id') id: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    const updateResult = await this.productosService.updateEstadoProducto(
+      id,
+      updateProductDto,
+    );
+    if (updateResult.success) {
+      return {
+        message: updateResult.message,
+        product: updateResult.product,
+      };
+    } else {
+      return {
+        message: updateResult.message,
+      };
     }
   }
 }
