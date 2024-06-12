@@ -16,11 +16,11 @@ export class RolMenuEntity {
 
   @ManyToOne(() => RolesEntity, (roles) => roles.id_rol)
   @JoinColumn({ name: 'id_rol' })
-  id_rol: RolesEntity;
+  rol: RolesEntity;
 
   @ManyToOne(() => MenuEntity, (menu) => menu.id_menu)
   @JoinColumn({ name: 'id_menu' })
-  id_menu: MenuEntity;
+  menu: MenuEntity;
 
   @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.id_rol_menu_permiso)
   roles_menus_permisos: RolMenuPermisoEntity[];

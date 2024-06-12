@@ -21,6 +21,6 @@ export class RolesEntity {
   @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.ID_rol)
   rolesUser: RolesUsuarioEntity[];
 
-  @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.id_rol)
+  @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.rol)
   roles_menus: RolMenuEntity[];
 }

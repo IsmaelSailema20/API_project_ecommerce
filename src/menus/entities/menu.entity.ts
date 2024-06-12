@@ -9,6 +9,6 @@ export class MenuEntity {
   @Column({ length: 30, unique: true, nullable: false })
   nombre: string;
 
-  @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.id_menu)
+  @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.menu)
   roles_menus: RolMenuEntity[];
 }
