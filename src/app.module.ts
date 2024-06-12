@@ -24,6 +24,11 @@ import { RolesMenusModule } from './roles_menus/roles_menus.module';
 import { MenusService } from './menus/menus.service';
 import { MenusController } from './menus/menus.controller';
 import { MenusModule } from './menus/menus.module';
+import { PermisosController } from './permisos/permisos.controller';
+import { PermisosService } from './permisos/permisos.service';
+import { PermisosModule } from './permisos/permisos.module';
+import { RolesMenusPermisosController } from './roles_menus_permisos/roles_menus_permisos.controller';
+import { RolesMenusPermisosModule } from './roles_menus_permisos/roles_menus_permisos.module';
 
 @Module({
   imports: [
@@ -57,8 +62,10 @@ import { MenusModule } from './menus/menus.module';
     RolesUsuarioModule,
     MenusModule,
     RolesMenusModule,
+    PermisosModule,
+    RolesMenusPermisosModule,
   ],
-  controllers: [AppController, MenusController],
-  providers: [AppService, MenusService],
+  controllers: [AppController, MenusController, PermisosController, RolesMenusPermisosController],
+  providers: [AppService, MenusService, PermisosService],
 })
 export class AppModule {}
