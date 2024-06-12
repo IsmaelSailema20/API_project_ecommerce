@@ -9,7 +9,9 @@ import { Repository } from 'typeorm';
 import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
 import { CreateUserDto, EditUserDto } from './dtos';
+import { plainToClass } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+import { GetUserDto } from './dtos/get-user-dto';
 
 @Injectable()
 export class UserService {
@@ -26,9 +28,10 @@ export class UserService {
 
   async getAll() {
     const users = await this.userRepository.find({
-      relations: ['person'],
+      relations: ['person', 'rolesUser', 'rolesUser.ID_rol'],
     });
-    return { users };
+
+    return users.map((user) => this.userToGetDto(user));
   }
 
   async getById(id: number): Promise<UserEntity> {
@@ -89,8 +92,6 @@ export class UserService {
     await this.rolesUsuarioRepository.save(rolesUsuario);
 
     return newUser;
-
-    return newUser;
   }
 
   async updateUser(
@@ -141,5 +142,16 @@ export class UserService {
 
   async getByUsername(username: string): Promise<UserEntity> {
     return await this.userRepository.findOneBy({ username });
+  }
+
+  userToGetDto(user: UserEntity): GetUserDto {
+    const userDto = plainToClass(GetUserDto, user, {
+      excludeExtraneousValues: true,
+    });
+    const roles = user.rolesUser.map((rol) => rol.ID_rol.nombre);
+
+    userDto.roles = roles;
+
+    return userDto;
   }
 }
