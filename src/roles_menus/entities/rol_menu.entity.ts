@@ -14,11 +14,11 @@ export class RolMenuEntity {
   @PrimaryGeneratedColumn()
   id_rol_menu: number;
 
-  @ManyToOne(() => RolesEntity, (roles) => roles.id_rol)
+  @ManyToOne(() => RolesEntity, (roles) => roles.roles_menus)
   @JoinColumn({ name: 'id_rol' })
   rol: RolesEntity;
 
-  @ManyToOne(() => MenuEntity, (menu) => menu.id_menu)
+  @ManyToOne(() => MenuEntity, (menu) => menu.roles_menus)
   @JoinColumn({ name: 'id_menu' })
   menu: MenuEntity;
 

@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
+import { CreateMenuDto } from './dtos/menu.dto';
 
 @Injectable()
 export class MenuService {
@@ -30,24 +31,40 @@ export class MenuService {
     return menus;
   }
 
-  async addMenuToRole(nombre_menu: string, nombre_rol: string): Promise<void> {
-    // Busca por nombre
-    const menu = await this.menuRepository.findOneBy({ nombre: nombre_menu });
-    const rol = await this.rolRepository.findOneBy({ nombre: nombre_rol });
+  async createMenu(menuDto: CreateMenuDto) {
+    const menu = await this.menuRepository.findOneBy({
+      nombre: menuDto.nombre,
+    });
 
+    if (menu) {
+      throw new ConflictException('El menú ya existe');
+    }
+
+    return await this.menuRepository.save(menuDto);
+  }
+
+  async addMenuToRole(nombre_menu: string, nombre_rol: string): Promise<void> {
+    // Buscar el menú por nombre
+    const menu = await this.menuRepository.findOne({
+      where: { nombre: nombre_menu },
+    });
     if (!menu) {
       throw new NotFoundException('El menú no existe');
     }
 
+    // Buscar el rol por nombre
+    const rol = await this.rolRepository.findOne({
+      where: { nombre: nombre_rol },
+    });
     if (!rol) {
       throw new NotFoundException('El rol no existe');
     }
 
+    // Verificar si el rol ya tiene el menú
     const rolMenuExists = await this.rolMenuRepository.findOne({
-      where: { rol, menu },
+      where: { rol: { id_rol: rol.id_rol }, menu: { id_menu: menu.id_menu } },
     });
-
-    if (!rolMenuExists) {
+    if (rolMenuExists) {
       throw new ConflictException('El rol ya tiene el menú');
     }
 

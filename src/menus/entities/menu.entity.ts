@@ -6,7 +6,7 @@ export class MenuEntity {
   @PrimaryGeneratedColumn()
   id_menu: number;
 
-  @Column({ length: 30, unique: true, nullable: false })
+  @Column()
   nombre: string;
 
   @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.menu)

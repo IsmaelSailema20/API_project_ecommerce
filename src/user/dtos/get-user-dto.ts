@@ -43,6 +43,8 @@ export class CreatePersonDto {
 
 export class GetUserDto {
   @Expose()
+  id_usuario: string;
+  @Expose()
   username: string;
   @Expose()
   fecha_creacion: Date;
