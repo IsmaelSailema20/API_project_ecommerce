@@ -1,10 +1,3 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -12,18 +5,28 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
 } from './constans/constans';
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-
 import { ProductosModule } from './productos/productos.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { MarcasModule } from './marcas/marcas.module';
-
 import { RolesModule } from './roles/roles.module';
 import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
 import { RolesMenusModule } from './roles_menus/roles_menus.module';
 import { MenusService } from './menus/menus.service';
 import { MenusController } from './menus/menus.controller';
 import { MenusModule } from './menus/menus.module';
+import { PermisosController } from './permisos/permisos.controller';
+import { PermisosService } from './permisos/permisos.service';
+import { PermisosModule } from './permisos/permisos.module';
+import { RolesMenusPermisosController } from './roles_menus_permisos/roles_menus_permisos.controller';
+import { RolesMenusPermisosModule } from './roles_menus_permisos/roles_menus_permisos.module';
 
 @Module({
   imports: [
@@ -57,8 +60,15 @@ import { MenusModule } from './menus/menus.module';
     RolesUsuarioModule,
     MenusModule,
     RolesMenusModule,
+    PermisosModule,
+    RolesMenusPermisosModule,
   ],
-  controllers: [AppController, MenusController],
-  providers: [AppService, MenusService],
+  controllers: [
+    AppController,
+    MenusController,
+    PermisosController,
+    RolesMenusPermisosController,
+  ],
+  providers: [AppService, MenusService, PermisosService],
 })
 export class AppModule {}
