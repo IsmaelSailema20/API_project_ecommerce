@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
+import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
 @Entity('roles')
 export class RolesEntity {
   @PrimaryGeneratedColumn()
@@ -19,4 +20,7 @@ export class RolesEntity {
 
   @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.ID_rol)
   rolesUser: RolesUsuarioEntity[];
+
+  @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.id_rol)
+  roles_menus: RolMenuEntity[];
 }

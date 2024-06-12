@@ -20,7 +20,10 @@ import { MarcasModule } from './marcas/marcas.module';
 
 import { RolesModule } from './roles/roles.module';
 import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
-
+import { RolesMenusModule } from './roles_menus/roles_menus.module';
+import { MenusService } from './menus/menus.service';
+import { MenusController } from './menus/menus.controller';
+import { MenusModule } from './menus/menus.module';
 
 @Module({
   imports: [
@@ -34,7 +37,7 @@ import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
         password: config.get<string>(DATABASE_PASSWORD), // Cambia esto a tu contraseña de PostgreSQL
         database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
         entities: [__dirname + '/**/**/*entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
       }),
     }),
 
@@ -52,9 +55,10 @@ import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
 
     RolesModule,
     RolesUsuarioModule,
-
+    MenusModule,
+    RolesMenusModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, MenusController],
+  providers: [AppService, MenusService],
 })
 export class AppModule {}
