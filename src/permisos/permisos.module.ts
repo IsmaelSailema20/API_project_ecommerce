@@ -2,6 +2,6 @@ import { Module } from '@nestjs/common';
 import { PermisosController } from './permisos.controller';
 
 @Module({
-  controllers: [PermisosController]
+  controllers: [PermisosController],
 })
 export class PermisosModule {}

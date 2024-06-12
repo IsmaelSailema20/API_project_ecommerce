@@ -1,4 +1,4 @@
-import { RolMenuPermisoEntity } from 'src/roles_menus_permisos/entities/roles_menus_permisos.entities';
+import { RolMenuPermisoEntity } from 'src/roles_menus_permisos/entities/roles_menus_permisos.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('permisos')
@@ -9,9 +9,6 @@ export class PermisoEntity {
   @Column()
   nombre: string;
 
-  @OneToMany(
-    () => RolMenuPermisoEntity,
-    (rol_menu_permiso) => rol_menu_permiso.id_rol_menu_permiso,
-  )
-  rol_menu_permiso: RolMenuPermisoEntity[];
+  @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.id_rol_menu_permiso)
+  roles_menus_permisos: RolMenuPermisoEntity[];
 }
