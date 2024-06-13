@@ -1,8 +1,11 @@
-import { IsString, IsNotEmpty, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
 
-export class MenuDto {
-  @IsString()
-  @Length(1, 20)
-  @IsNotEmpty()
+export class CreateMenuDto {
+  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @IsNotEmpty({ message: 'El nombre no puede estar vacio' })
+  @ApiProperty({
+    example: 'CATEGORIAS',
+  })
   nombre: string;
 }

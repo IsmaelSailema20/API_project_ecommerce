@@ -1,10 +1,24 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  SetMetadata,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriasDto } from './dtos/create-categorias.dto';
 import { UpdateCategoriasDto } from './dtos/update-categorias.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+
 @ApiTags('Categorias')
 @Controller('categorias')
+@UseGuards(JwtAuthGuard, MenuAccessGuard)
+@SetMetadata('menu', 'CATEGORIAS')
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 

@@ -9,18 +9,18 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('menus')
+@Entity('roles_menus')
 export class RolMenuEntity {
   @PrimaryGeneratedColumn()
   id_rol_menu: number;
 
-  @ManyToOne(() => RolesEntity, (roles) => roles.id_rol)
+  @ManyToOne(() => RolesEntity, (roles) => roles.roles_menus)
   @JoinColumn({ name: 'id_rol' })
-  id_rol: RolesEntity;
+  rol: RolesEntity;
 
-  @ManyToOne(() => MenuEntity, (menu) => menu.id_menu)
+  @ManyToOne(() => MenuEntity, (menu) => menu.roles_menus)
   @JoinColumn({ name: 'id_menu' })
-  id_menu: MenuEntity;
+  menu: MenuEntity;
 
   @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.id_rol_menu_permiso)
   roles_menus_permisos: RolMenuPermisoEntity[];

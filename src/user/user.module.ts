@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PersonEntity, UserEntity } from './entities';
 import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
+import { MenuEntity } from 'src/menus/entities/menu.entity';
+import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.ent
       PersonEntity,
       RolesEntity,
       RolesUsuarioEntity,
+      MenuEntity,
+      RolMenuEntity,
     ]),
   ],
   controllers: [UserController],

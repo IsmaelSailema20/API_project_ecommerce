@@ -38,9 +38,6 @@ export class UserEntity {
   person: PersonEntity;
 
   //RELACION CON LA TABLA DE ROLES_USUARIOS
-  @OneToMany(
-    () => RolesUsuarioEntity,
-    (rolesUsuario) => rolesUsuario.ID_usuario,
-  )
+  @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.user)
   rolesUser: RolesUsuarioEntity[];
 }

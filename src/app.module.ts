@@ -6,8 +6,6 @@ import {
   DATABASE_USERNAME,
 } from './constans/constans';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
@@ -18,15 +16,10 @@ import { CategoriasModule } from './categorias/categorias.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { RolesModule } from './roles/roles.module';
 import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
-import { RolesMenusModule } from './roles_menus/roles_menus.module';
-import { MenusService } from './menus/menus.service';
-import { MenusController } from './menus/menus.controller';
-import { MenusModule } from './menus/menus.module';
-import { PermisosController } from './permisos/permisos.controller';
-import { PermisosService } from './permisos/permisos.service';
-import { PermisosModule } from './permisos/permisos.module';
-import { RolesMenusPermisosController } from './roles_menus_permisos/roles_menus_permisos.controller';
-import { RolesMenusPermisosModule } from './roles_menus_permisos/roles_menus_permisos.module';
+import { RolMenuModule } from './roles_menus/rol_menu.module';
+import { MenuModule } from './menus/menu.module';
+import { PermisoModule } from './permisos/permiso.module';
+import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
 
 @Module({
   imports: [
@@ -41,6 +34,7 @@ import { RolesMenusPermisosModule } from './roles_menus_permisos/roles_menus_per
         database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
         entities: [__dirname + '/**/**/*entity{.ts,.js}'],
         synchronize: false,
+        // logging: true,
       }),
     }),
 
@@ -51,24 +45,15 @@ import { RolesMenusPermisosModule } from './roles_menus_permisos/roles_menus_per
     UserModule,
     TiposIdentifcadoresModule,
     AuthModule,
-
     ProductosModule,
     CategoriasModule,
     MarcasModule,
-
     RolesModule,
     RolesUsuarioModule,
-    MenusModule,
-    RolesMenusModule,
-    PermisosModule,
-    RolesMenusPermisosModule,
+    MenuModule,
+    RolMenuModule,
+    PermisoModule,
+    RolMenuPermisoModule,
   ],
-  controllers: [
-    AppController,
-    MenusController,
-    PermisosController,
-    RolesMenusPermisosController,
-  ],
-  providers: [AppService, MenusService, PermisosService],
 })
 export class AppModule {}

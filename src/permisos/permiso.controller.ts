@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
 @Controller('permisos')
-export class PermisosController {}
+export class PermisoController {}

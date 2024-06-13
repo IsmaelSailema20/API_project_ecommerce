@@ -2,8 +2,10 @@ import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
 import { TiposIdentifcadoresService } from './tipos-identifcadores.service';
 import { CreateTipoIdentfDto } from 'src/tipos-identifcadores/dtos/create-tipo-identf.dto';
 import { UpdateTipoIdentfDto } from 'src/tipos-identifcadores/dtos/update-tipo-identf.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('tiposIdentf')
+@ApiTags('Tipos de identificacion')
+@Controller('tipos-identificacion')
 export class TiposIdentifcadoresController {
   constructor(
     private readonly tiposIdentfService: TiposIdentifcadoresService,

@@ -7,13 +7,20 @@ import {
   Post,
   Put,
   Query,
+  SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductosDto } from './dtos/create-productos.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateProductDto } from './dtos/update-product.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+
 @ApiTags('Productos')
 @Controller('productos')
+@UseGuards(JwtAuthGuard, MenuAccessGuard)
+@SetMetadata('menu', 'PRODUCTOS')
 export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 
