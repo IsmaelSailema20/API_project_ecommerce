@@ -6,8 +6,6 @@ import {
   DATABASE_USERNAME,
 } from './constans/constans';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
@@ -36,6 +34,7 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
         database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
         entities: [__dirname + '/**/**/*entity{.ts,.js}'],
         synchronize: false,
+        // logging: true,
       }),
     }),
 
@@ -56,7 +55,5 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
     PermisoModule,
     RolMenuPermisoModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

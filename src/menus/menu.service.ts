@@ -79,7 +79,9 @@ export class MenuService {
   }
 
   async getMenusByRoleName(nombre: string) {
-    const rol = await this.rolRepository.findOneBy({ nombre: nombre });
+    const rol = await this.rolRepository.findOne({
+      where: { nombre },
+    });
 
     if (!rol) {
       throw new NotFoundException('No existe el rol');
@@ -90,7 +92,7 @@ export class MenuService {
     });
 
     if (menus.length == 0) {
-      throw new NotFoundException('No existe el rol');
+      throw new NotFoundException('El rol no tiene menús');
     }
 
     return { rol: rol.nombre, menus: menus };

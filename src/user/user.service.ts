@@ -28,7 +28,7 @@ export class UserService {
 
   async getAll() {
     const users = await this.userRepository.find({
-      relations: ['person', 'rolesUser', 'rolesUser.ID_rol'],
+      relations: ['person', 'rolesUser', 'rolesUser.rol'],
     });
 
     return users.map((user) => this.userToGetDto(user));

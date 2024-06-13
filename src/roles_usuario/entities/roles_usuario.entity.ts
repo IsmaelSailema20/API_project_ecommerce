@@ -16,10 +16,10 @@ export class RolesUsuarioEntity {
   estado: string;
 
   @ManyToOne(() => UserEntity, (user) => user.rolesUser)
-  @JoinColumn({ name: 'ID_usuario' })
+  @JoinColumn({ name: 'id_usuario' })
   user: UserEntity;
 
   @ManyToOne(() => RolesEntity, (roles) => roles.id_rol)
-  @JoinColumn({ name: 'ID_rol' })
+  @JoinColumn({ name: 'id_rol' })
   rol: RolesEntity;
 }

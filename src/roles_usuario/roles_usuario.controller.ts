@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesUsuarioService } from './roles_usuario.service';
 
-@ApiTags('RolesUsuarioController')
+@ApiTags('Rol Usuario')
 @Controller('rolesUsuario')
 export class RolesUsuarioController {
   constructor(private readonly rolesUsuarioService: RolesUsuarioService) {}

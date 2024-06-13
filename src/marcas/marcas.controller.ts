@@ -1,10 +1,24 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  SetMetadata,
+  UseGuards,
+} from '@nestjs/common';
 import { MarcasService } from './marcas.service';
 import { CreateMarcasDto } from './dtos/create-marcas.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateMarcasDto } from './dtos/update-marcas.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+
 @ApiTags('Marcas')
 @Controller('marcas')
+@UseGuards(JwtAuthGuard, MenuAccessGuard)
+@SetMetadata('menu', 'MARCAS')
 export class MarcasController {
   constructor(private readonly marcasServices: MarcasService) {}
 
