@@ -25,7 +25,7 @@ export class MenuController {
   }
 
   @Get('/rol/:nombre')
-  async getMenusByRoleName(@Param() nombre: string) {
+  async getMenusByRoleName(@Param('nombre') nombre: string) {
     return await this.menuService.getMenusByRoleName(nombre);
   }
 }

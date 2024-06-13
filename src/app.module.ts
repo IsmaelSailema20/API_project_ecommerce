@@ -19,7 +19,7 @@ import { MarcasModule } from './marcas/marcas.module';
 import { RolesModule } from './roles/roles.module';
 import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
 import { RolMenuModule } from './roles_menus/rol_menu.module';
-import { MenusModule } from './menus/menu.module';
+import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
 import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
 
@@ -51,7 +51,7 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
     MarcasModule,
     RolesModule,
     RolesUsuarioModule,
-    MenusModule,
+    MenuModule,
     RolMenuModule,
     PermisoModule,
     RolMenuPermisoModule,

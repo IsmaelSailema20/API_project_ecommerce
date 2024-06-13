@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('menus')
+@Entity('roles_menus')
 export class RolMenuEntity {
   @PrimaryGeneratedColumn()
   id_rol_menu: number;

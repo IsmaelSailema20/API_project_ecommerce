@@ -7,7 +7,6 @@ export class RolesEntity {
   id_rol: number;
 
   @Column({
-    name: 'tipo_rol',
     type: 'varchar',
     length: 20,
     unique: true,
@@ -18,7 +17,7 @@ export class RolesEntity {
   @Column({ name: 'estado', type: 'varchar', nullable: false, length: 4 })
   estado_rol: string;
 
-  @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.ID_rol)
+  @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.rol)
   rolesUser: RolesUsuarioEntity[];
 
   @OneToMany(() => RolMenuEntity, (rol_menu) => rol_menu.rol)

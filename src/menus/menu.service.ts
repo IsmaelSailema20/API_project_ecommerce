@@ -62,7 +62,10 @@ export class MenuService {
 
     // Verificar si el rol ya tiene el menú
     const rolMenuExists = await this.rolMenuRepository.findOne({
-      where: { rol: { id_rol: rol.id_rol }, menu: { id_menu: menu.id_menu } },
+      where: {
+        rol: { id_rol: rol.id_rol },
+        menu: { id_menu: menu.id_menu },
+      },
     });
     if (rolMenuExists) {
       throw new ConflictException('El rol ya tiene el menú');
@@ -75,27 +78,21 @@ export class MenuService {
     await this.rolMenuRepository.save(rolMenu);
   }
 
-  async getMenusByRoleName(nombre: string): Promise<MenuEntity[]> {
-    // Encuentra el rol por nombre, incluyendo la relación roles_menus
-    const rol = await this.rolRepository.findOne({
-      where: { nombre },
-      relations: ['roles_menus', 'roles_menus.id_menu'],
+  async getMenusByRoleName(nombre: string) {
+    const rol = await this.rolRepository.findOneBy({ nombre: nombre });
+
+    if (!rol) {
+      throw new NotFoundException('No existe el rol');
+    }
+
+    const menus = await this.menuRepository.find({
+      where: { roles_menus: { rol } },
     });
 
-    // Verifica si el rol existe
-    if (!rol) {
-      throw new NotFoundException('El rol no existe');
+    if (menus.length == 0) {
+      throw new NotFoundException('No existe el rol');
     }
 
-    // Extrae los menús de la relación roles_menus
-    const menus = rol.roles_menus.map((rol_menu) => rol_menu.menu);
-
-    // Verifica si hay menús asociados
-    if (menus.length === 0) {
-      throw new NotFoundException('El rol no tiene menús');
-    }
-
-    // Retorna los menús asociados al rol
-    return menus;
+    return { rol: rol.nombre, menus: menus };
   }
 }

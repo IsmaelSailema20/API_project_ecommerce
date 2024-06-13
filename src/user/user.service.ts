@@ -84,8 +84,8 @@ export class UserService {
 
     // Crear una instancia de la entidad RolesUsuarios
     const rolesUsuario = new RolesUsuarioEntity();
-    rolesUsuario.ID_rol = rolExiste;
-    rolesUsuario.ID_usuario = newUser;
+    rolesUsuario.rol = rolExiste;
+    rolesUsuario.user = newUser;
     rolesUsuario.estado = 'act';
 
     // Guardar la relación en la tabla de rompimiento
@@ -140,15 +140,19 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
-  async getByUsername(username: string): Promise<UserEntity> {
-    return await this.userRepository.findOneBy({ username });
+  async getByUsername(username: string) {
+    const user = await this.userRepository.findOne({
+      where: { username },
+      relations: ['person', 'rolesUser', 'rolesUser.rol'],
+    });
+    return this.userToGetDto(user);
   }
 
   userToGetDto(user: UserEntity): GetUserDto {
     const userDto = plainToClass(GetUserDto, user, {
       excludeExtraneousValues: true,
     });
-    const roles = user.rolesUser.map((rol) => rol.ID_rol.nombre);
+    const roles = user.rolesUser.map((rol) => rol.rol.nombre);
 
     userDto.roles = roles;
 

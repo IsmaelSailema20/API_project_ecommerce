@@ -13,13 +13,14 @@ export class AuthService {
 
   async validateUser({ username, password }: AuthPayloadDTO) {
     const findUser = await this.userService.getByUsername(username);
-
+    console.log('a');
     if (!findUser) {
       throw new UnauthorizedException('Credenciales invalidas');
     }
 
     const isMatch = await bcrypt.compare(password, findUser.password);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: ps, person, ...user } = findUser;
 
     if (isMatch) {

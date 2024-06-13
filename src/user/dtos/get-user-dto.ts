@@ -47,6 +47,8 @@ export class GetUserDto {
   @Expose()
   username: string;
   @Expose()
+  password: string;
+  @Expose()
   fecha_creacion: Date;
   @Expose()
   estado_usuario: string;

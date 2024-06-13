@@ -11,5 +11,6 @@ import { RolesEntity } from 'src/roles/entities/roles.entity';
   imports: [TypeOrmModule.forFeature([RolesEntity, MenuEntity, RolMenuEntity])],
   providers: [MenuService],
   controllers: [MenuController],
+  exports: [TypeOrmModule],
 })
-export class MenusModule {}
+export class MenuModule {}
