@@ -20,6 +20,9 @@ import { RolMenuModule } from './roles_menus/rol_menu.module';
 import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
 import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
+import { FacturasModule } from 'src/facturas/facturas.module';
+import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
+import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
 
 @Module({
   imports: [
@@ -54,6 +57,9 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
     RolMenuModule,
     PermisoModule,
     RolMenuPermisoModule,
+    FacturasModule,
+    DetallesFacturaModule,
+    MetodosPagoModule,
   ],
 })
 export class AppModule {}
