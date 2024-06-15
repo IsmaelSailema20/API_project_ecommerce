@@ -4,10 +4,14 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
+  JoinTable,
 } from 'typeorm';
 import { PersonEntity } from './person.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
+import { Factura } from 'src/facturas/entities/facturas.entity';
+import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -40,4 +44,20 @@ export class UserEntity {
   //RELACION CON LA TABLA DE ROLES_USUARIOS
   @OneToMany(() => RolesUsuarioEntity, (rolesUsuario) => rolesUsuario.user)
   rolesUser: RolesUsuarioEntity[];
+
+  //RELACION CON FACTURAS
+  @OneToMany(() => Factura, (factura) => factura.usuario, { cascade: true })
+  factura: Factura;
+
+  // RELACION MUCHOS A MUCHOS CON METODOS DE PAGO
+  @ManyToMany(() => MetodosPago, (metodoPago) => metodoPago.usuarios)
+  @JoinTable({
+    name: 'users_metodos_pago',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id_usuario' },
+    inverseJoinColumn: {
+      name: 'metodo_pago_id',
+      referencedColumnName: 'id_metodoPago',
+    },
+  })
+  metodosPago: MetodosPago[];
 }
