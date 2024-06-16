@@ -27,7 +27,7 @@ export class MetodosPagoService {
 
   async findOne(id: number): Promise<MetodosPago> {
     return this.metodosPagoRepository.findOne({
-      where: { id_metodoPago: id },
+      where: { id_metodopago: id },
     });
   }
 
@@ -36,7 +36,7 @@ export class MetodosPagoService {
     is_user: number,
   ): Promise<void> {
     const metodoPago = await this.metodosPagoRepository.findOne({
-      where: { id_metodoPago: id_metodoPago },
+      where: { id_metodopago: id_metodoPago },
       relations: ['usuarios'],
     });
     const user = await this.userRepository.findOne({

@@ -20,8 +20,8 @@ export class MetodosPagoController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<MetodosPago> {
-    return this.metodosPagoService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<MetodosPago> {
+    return this.metodosPagoService.findOne(id);
   }
 
   @Patch(':metodoPagoId/users/:userId')

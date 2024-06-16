@@ -13,26 +13,31 @@ import { CreateDetalleFacturaDto } from 'src/detalles_factura/dtos/create-detall
 export class CreateFacturaDto {
   @IsNotEmpty()
   @IsDate()
-  readonly fecha: Date;
+  @Type(() => Date)
+  fecha: Date;
 
   @IsNotEmpty()
   @IsString()
-  readonly hora_factura: string;
+  hora_factura: string;
 
   @IsNotEmpty()
   @IsNumber()
-  readonly total_factura: number;
+  total_factura: number;
 
   @IsNotEmpty()
   @IsNumber()
-  readonly porcentaje_descuento: number;
+  porcentaje_descuento: number;
 
   @IsNotEmpty()
   @IsNumber()
-  readonly id_user: number;
+  id_user: number;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateDetalleFacturaDto)
-  readonly detallesFactura: CreateDetalleFacturaDto[];
+  detallesFactura: CreateDetalleFacturaDto[];
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_metodopago: number;
 }

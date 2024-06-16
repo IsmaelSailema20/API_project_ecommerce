@@ -8,24 +8,27 @@ import {
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { ProductosEntity } from 'src/productos/entities/productos.entity';
 
-@Entity()
+@Entity('detallefactura')
 export class DetalleFactura {
   @PrimaryGeneratedColumn()
-  id: number;
+  id_detalle_factura: number;
 
-  @ManyToOne(() => ProductosEntity, (producto) => producto.detalleFactura)
+  @ManyToOne(() => ProductosEntity, (producto) => producto.detalleFactura, {
+    cascade: true,
+  })
   @JoinColumn({ name: 'id_producto' })
   producto: ProductosEntity;
 
-  @Column({ type: 'decimal' })
+  @Column({ name: 'total_detalle', type: 'decimal' })
   total_detalle: number;
 
-  @Column({ type: 'decimal' })
+  @Column({ name: 'porcentaje_descuento', type: 'decimal' })
   porcentaje_descuento: number;
 
-  @Column({ type: 'number' })
+  @Column({ name: 'cantidad', type: 'integer' })
   cantidad: number;
 
   @ManyToOne(() => Factura, (factura) => factura.detallesFactura)
-  factura: Factura[];
+  @JoinColumn({ name: 'id_factura' })
+  factura: Factura;
 }

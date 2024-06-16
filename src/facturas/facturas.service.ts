@@ -6,6 +6,8 @@ import { Factura } from './entities/facturas.entity';
 import { CreateFacturaDto } from './dtos/create-facturas.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.entity';
+import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
+import { ProductosEntity } from 'src/productos/entities/productos.entity';
 
 @Injectable()
 export class FacturasService {
@@ -16,21 +18,47 @@ export class FacturasService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(DetalleFactura)
     private readonly detallesFacturaRepository: Repository<DetalleFactura>,
+    @InjectRepository(MetodosPago)
+    private readonly metodosPagoRepository: Repository<MetodosPago>,
+    @InjectRepository(ProductosEntity)
+    private readonly productosRepository: Repository<ProductosEntity>,
   ) {}
   //Crear la factura
   async create(createFacturaDto: CreateFacturaDto): Promise<Factura> {
+    const { detallesFactura, id_user, id_metodopago, ...facturaData } =
+      createFacturaDto;
+
     const user = await this.userRepository.findOne({
-      where: { id_usuario: createFacturaDto.id_user },
+      where: { id_usuario: id_user },
+    });
+    const metodoPago = await this.metodosPagoRepository.findOneBy({
+      id_metodopago,
     });
 
     const factura = this.facturasRepository.create({
-      fecha: createFacturaDto.fecha,
-      hora_factura: createFacturaDto.hora_factura,
-      total_factura: createFacturaDto.total_factura,
-      porcentaje_descuento: createFacturaDto.porcentaje_descuento,
+      ...facturaData,
       usuario: user,
-      detallesFactura: createFacturaDto.detallesFactura,
+      metodoPago: metodoPago,
     });
+
+    await this.facturasRepository.save(factura);
+
+    const detalleFacturas = await Promise.all(
+      detallesFactura.map(async (detalleDto) => {
+        const producto = await this.productosRepository.findOne({
+          where: { id_producto: detalleDto.id_producto },
+        });
+        const detalleFactura = this.detallesFacturaRepository.create({
+          ...detalleDto,
+          producto,
+          factura,
+        });
+        return this.detallesFacturaRepository.save(detalleFactura);
+      }),
+    );
+
+    factura.detallesFactura = detalleFacturas;
+
     return this.facturasRepository.save(factura);
   }
 
@@ -43,7 +71,7 @@ export class FacturasService {
   //BUSCA LA FACTURA POR EL ID
   async findOne(id: number): Promise<Factura> {
     return this.facturasRepository.findOne({
-      where: { id: id },
+      where: { id_factura: id },
       relations: ['usuario', 'detallesFactura'],
     });
   }

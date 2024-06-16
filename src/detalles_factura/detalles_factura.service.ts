@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DetalleFactura } from './entities/detalles_factura.entity';
-import { CreateDetalleFacturaDto } from './dtos/create-detalles_factura.dto';
+//import { CreateDetalleFacturaDto } from './dtos/create-detalles_factura.dto';
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { ProductosEntity } from 'src/productos/entities/productos.entity';
 
@@ -18,14 +18,14 @@ export class DetallesFacturaService {
     private readonly productosRepository: Repository<ProductosEntity>,
   ) {}
 
-  async crearDetalleFactura(
+  /*async crearDetalleFactura(
     createDetalleFacturaDto: CreateDetalleFacturaDto,
   ): Promise<DetalleFactura> {
     const producto = await this.productosRepository.findOne({
       where: { id_producto: createDetalleFacturaDto.id_producto },
     });
     const factura = await this.facturaRepository.findOne({
-      where: { id: createDetalleFacturaDto.id_factura },
+      where: { id_factura: createDetalleFacturaDto.id_factura },
     });
 
     if (!producto || !factura) {
@@ -34,10 +34,11 @@ export class DetallesFacturaService {
     const detalleFactura = this.detallesFacturaRepository.create({
       ...createDetalleFacturaDto,
       producto,
+      factura,
     });
 
     return this.detallesFacturaRepository.save(detalleFactura);
-  }
+  }*/
 
   async findAll(): Promise<DetalleFactura[]> {
     return this.detallesFacturaRepository.find({
@@ -47,14 +48,14 @@ export class DetallesFacturaService {
 
   async findByFacturaId(facturaId: number): Promise<DetalleFactura[]> {
     return this.detallesFacturaRepository.find({
-      where: { factura: { id: facturaId } },
+      where: { factura: { id_factura: facturaId } },
       relations: ['producto', 'factura'],
     });
   }
 
   async findOne(id: number): Promise<DetalleFactura> {
     return this.detallesFacturaRepository.findOne({
-      where: { id: id },
+      where: { id_detalle_factura: id },
       relations: ['producto', 'factura'],
     });
   }

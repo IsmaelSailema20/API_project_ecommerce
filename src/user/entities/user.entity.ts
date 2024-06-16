@@ -56,7 +56,7 @@ export class UserEntity {
     joinColumn: { name: 'user_id', referencedColumnName: 'id_usuario' },
     inverseJoinColumn: {
       name: 'metodo_pago_id',
-      referencedColumnName: 'id_metodoPago',
+      referencedColumnName: 'id_metodopago',
     },
   })
   metodosPago: MetodosPago[];

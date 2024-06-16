@@ -54,12 +54,8 @@ export class ProductosEntity {
   })
   descripcion: string;
 
-  @OneToMany(
-    () => DetalleFactura,
-    (detalleFactura) => detalleFactura.producto,
-    { cascade: true },
-  )
-  detalleFactura: DetalleFactura;
+  @OneToMany(() => DetalleFactura, (detalleFactura) => detalleFactura.producto)
+  detalleFactura: DetalleFactura[];
 
   @ManyToOne(() => MarcasEntity, (marcas) => marcas.producto, { cascade: true })
   @JoinColumn({ name: 'id_marca' })

@@ -8,12 +8,12 @@ import {
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { UserEntity } from 'src/user/entities';
 
-@Entity()
+@Entity('metodospago')
 export class MetodosPago {
   @PrimaryGeneratedColumn()
-  id_metodoPago: number;
+  id_metodopago: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   nombre: string;
 
   @Column()
