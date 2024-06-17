@@ -5,8 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.entity';
 @Entity('productos')
 export class ProductosEntity {
   @PrimaryGeneratedColumn()
@@ -51,6 +53,9 @@ export class ProductosEntity {
     nullable: false,
   })
   descripcion: string;
+
+  @OneToMany(() => DetalleFactura, (detalleFactura) => detalleFactura.producto)
+  detalleFactura: DetalleFactura[];
 
   @ManyToOne(() => MarcasEntity, (marcas) => marcas.producto, { cascade: true })
   @JoinColumn({ name: 'id_marca' })
