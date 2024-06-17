@@ -23,6 +23,9 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
 import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
 import { DetalleNotasDeCreditoModule } from './detalle_notas_de_credito/detalle_notas_de_credito.module';
 import { DetallesNotasDeCreditoController } from './detalle_notas_de_credito/detalles_notas_de_credito.controller';
+import { FacturasModule } from 'src/facturas/facturas.module';
+import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
+import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
 
 @Module({
   imports: [
@@ -59,6 +62,9 @@ import { DetallesNotasDeCreditoController } from './detalle_notas_de_credito/det
     RolMenuPermisoModule,
     NotasDeCreditoModule,
     DetalleNotasDeCreditoModule,
+    FacturasModule,
+    DetallesFacturaModule,
+    MetodosPagoModule,
   ],
   controllers: [DetallesNotasDeCreditoController],
 })
