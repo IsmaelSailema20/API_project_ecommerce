@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.entity';
+import { DetalleNotasDeCreditoEntity } from 'src/detalle_notas_de_credito/entities/detalle_notas_de_credito.entity';
 @Entity('productos')
 export class ProductosEntity {
   @PrimaryGeneratedColumn()
@@ -66,4 +67,10 @@ export class ProductosEntity {
   })
   @JoinColumn({ name: 'id_categoria' })
   categoria: CategoriasEntity;
+
+  @OneToMany(
+    () => DetalleNotasDeCreditoEntity,
+    (detalleNotasDeCredito) => detalleNotasDeCredito.producto,
+  )
+  detalleNotasDeCredito: DetalleNotasDeCreditoEntity[];
 }

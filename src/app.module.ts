@@ -21,8 +21,6 @@ import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
 import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
 import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
-import { DetalleNotasDeCreditoModule } from './detalle_notas_de_credito/detalle_notas_de_credito.module';
-import { DetallesNotasDeCreditoController } from './detalle_notas_de_credito/detalles_notas_de_credito.controller';
 import { FacturasModule } from 'src/facturas/facturas.module';
 import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
 import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
@@ -61,11 +59,10 @@ import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
     PermisoModule,
     RolMenuPermisoModule,
     NotasDeCreditoModule,
-    DetalleNotasDeCreditoModule,
     FacturasModule,
     DetallesFacturaModule,
     MetodosPagoModule,
   ],
-  controllers: [DetallesNotasDeCreditoController],
+  controllers: [],
 })
 export class AppModule {}

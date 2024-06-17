@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
 import { MetodosPagoService } from './metodosPago.service';
 import { CreateMetodosPagoDto } from './dtos/create-metodosPago.dto';
 import { MetodosPago } from './entities/metodosPago.entity';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Metodos-de-pago')
 @Controller('metodos-pago')
 export class MetodosPagoController {
   constructor(private readonly metodosPagoService: MetodosPagoService) {}

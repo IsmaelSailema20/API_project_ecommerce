@@ -24,6 +24,10 @@ export class CreateNotasDeCreditoDto {
   descripcion: string;
 
   @IsNotEmpty()
+  @IsString()
+  estado: string;
+
+  @IsNotEmpty()
   @IsNumber()
   id_factura: number;
 
@@ -34,5 +38,5 @@ export class CreateNotasDeCreditoDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateDetallesNotasDeCreditoDto)
-  detallesFactura: CreateDetallesNotasDeCreditoDto[];
+  detallesNotaDeCredito: CreateDetallesNotasDeCreditoDto[];
 }

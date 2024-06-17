@@ -12,6 +12,7 @@ import { PersonEntity } from './person.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
+import { NotasDeCreditoEntity } from 'src/notas_de_credito/entities/notas_de_credito.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -60,4 +61,13 @@ export class UserEntity {
     },
   })
   metodosPago: MetodosPago[];
+
+  @OneToMany(
+    () => NotasDeCreditoEntity,
+    (notaDeCredito) => notaDeCredito.usuario,
+    {
+      cascade: true,
+    },
+  )
+  notasDeCredito: NotasDeCreditoEntity[];
 }
