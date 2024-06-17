@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { FacturasService } from './facturas.service';
 import { CreateFacturaDto } from './dtos/create-facturas.dto';
 import { Factura } from './entities/facturas.entity';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Facturas')
 @Controller('facturas')
 export class FacturasController {
   constructor(private readonly facturasService: FacturasService) {}

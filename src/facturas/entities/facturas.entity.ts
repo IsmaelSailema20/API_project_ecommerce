@@ -9,6 +9,7 @@ import {
 import { UserEntity } from 'src/user/entities';
 import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.entity';
 import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
+import { NotasDeCreditoEntity } from 'src/notas_de_credito/entities/notas_de_credito.entity';
 
 @Entity('factura')
 export class Factura {
@@ -39,4 +40,13 @@ export class Factura {
   @ManyToOne(() => MetodosPago, (metodosPago) => metodosPago.facturas)
   @JoinColumn({ name: 'id_metodopago' })
   metodoPago: MetodosPago;
+
+  @OneToMany(
+    () => NotasDeCreditoEntity,
+    (notaDeCredito) => notaDeCredito.factura,
+    {
+      cascade: true,
+    },
+  )
+  notasDeCredito: NotasDeCreditoEntity[];
 }
