@@ -20,6 +20,9 @@ import { RolMenuModule } from './roles_menus/rol_menu.module';
 import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
 import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
+import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
+import { DetalleNotasDeCreditoModule } from './detalle_notas_de_credito/detalle_notas_de_credito.module';
+import { DetallesNotasDeCreditoController } from './detalle_notas_de_credito/detalles_notas_de_credito.controller';
 
 @Module({
   imports: [
@@ -54,6 +57,9 @@ import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.mo
     RolMenuModule,
     PermisoModule,
     RolMenuPermisoModule,
+    NotasDeCreditoModule,
+    DetalleNotasDeCreditoModule,
   ],
+  controllers: [DetallesNotasDeCreditoController],
 })
 export class AppModule {}
