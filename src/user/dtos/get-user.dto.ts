@@ -1,7 +1,7 @@
 import { IsString, IsDate, IsNotEmpty, IsEmail, Length } from 'class-validator';
 
 import { Expose, Type } from 'class-transformer';
-export class CreatePersonDto {
+export class CreateOtherPersonDto {
   @IsString()
   @IsNotEmpty()
   nombre: string;
@@ -58,5 +58,5 @@ export class GetUserDto {
   fecha_ultima_conexion: Date;
   roles: string[];
   @Expose()
-  person: CreatePersonDto;
+  person: CreateOtherPersonDto;
 }

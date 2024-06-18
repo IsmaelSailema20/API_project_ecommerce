@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.entity';
 import { DetalleNotasDeCreditoEntity } from 'src/detalle_notas_de_credito/entities/detalle_notas_de_credito.entity';
+import { ProductosCarritoComprasEntity } from 'src/productos_carritos_compras/entities/productos_carrito_compras.entity';
 @Entity('productos')
 export class ProductosEntity {
   @PrimaryGeneratedColumn()
@@ -73,4 +74,10 @@ export class ProductosEntity {
     (detalleNotasDeCredito) => detalleNotasDeCredito.producto,
   )
   detalleNotasDeCredito: DetalleNotasDeCreditoEntity[];
+
+  @OneToMany(
+    () => ProductosCarritoComprasEntity,
+    (productosCarrito) => productosCarrito.producto,
+  )
+  productoCarrito: ProductosCarritoComprasEntity[];
 }

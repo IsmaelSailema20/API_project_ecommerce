@@ -24,6 +24,7 @@ import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module
 import { FacturasModule } from 'src/facturas/facturas.module';
 import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
 import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
+import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
     FacturasModule,
     DetallesFacturaModule,
     MetodosPagoModule,
+    CarritoComprasModule,
   ],
   controllers: [],
 })
