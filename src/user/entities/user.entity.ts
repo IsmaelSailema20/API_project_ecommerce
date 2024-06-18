@@ -13,6 +13,7 @@ import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.ent
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
 import { NotasDeCreditoEntity } from 'src/notas_de_credito/entities/notas_de_credito.entity';
+import { CarritoComprasEntity } from 'src/carrito_compras/entities/carrito_compras.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -70,4 +71,9 @@ export class UserEntity {
     },
   )
   notasDeCredito: NotasDeCreditoEntity[];
+
+  @OneToOne(() => CarritoComprasEntity, (carrito) => carrito.usuario, {
+    cascade: true,
+  })
+  carrito: CarritoComprasEntity;
 }

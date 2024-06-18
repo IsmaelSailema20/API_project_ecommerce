@@ -8,10 +8,11 @@ import { PersonEntity, UserEntity } from './entities';
 import { Repository } from 'typeorm';
 import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
-import { CreateUserDto, EditUserDto } from './dtos';
 import { plainToClass } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
-import { GetUserDto } from './dtos/get-user-dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { EditUserDto } from './dtos/edite-user.dto';
+import { GetUserDto } from './dtos/get-user.dto';
 
 @Injectable()
 export class UserService {
