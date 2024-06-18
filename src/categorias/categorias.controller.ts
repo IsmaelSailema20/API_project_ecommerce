@@ -42,6 +42,7 @@ export class CategoriasController {
       return { message: newCategoria.message };
     }
   }
+
   @Put(':id')
   async updateCategoria(
     @Param('id') id: number,
