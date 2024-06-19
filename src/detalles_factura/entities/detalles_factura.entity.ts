@@ -8,7 +8,7 @@ import {
 import { Factura } from 'src/facturas/entities/facturas.entity';
 import { ProductosEntity } from 'src/productos/entities/productos.entity';
 
-@Entity('detallefactura')
+@Entity('detalle_factura')
 export class DetalleFactura {
   @PrimaryGeneratedColumn()
   id_detalle_factura: number;

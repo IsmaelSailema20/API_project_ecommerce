@@ -55,10 +55,10 @@ export class UserEntity {
   @ManyToMany(() => MetodosPago, (metodoPago) => metodoPago.usuarios)
   @JoinTable({
     name: 'users_metodos_pago',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id_usuario' },
+    joinColumn: { name: 'id_user', referencedColumnName: 'id_usuario' },
     inverseJoinColumn: {
-      name: 'metodo_pago_id',
-      referencedColumnName: 'id_metodopago',
+      name: 'id_metodo_pago',
+      referencedColumnName: 'id_metodo_pago',
     },
   })
   metodosPago: MetodosPago[];

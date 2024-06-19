@@ -39,5 +39,5 @@ export class CreateFacturaDto {
 
   @IsNotEmpty()
   @IsNumber()
-  id_metodopago: number;
+  id_metodo_pago: number;
 }

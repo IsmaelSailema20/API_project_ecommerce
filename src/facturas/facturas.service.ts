@@ -25,14 +25,18 @@ export class FacturasService {
   ) {}
   //Crear la factura
   async create(createFacturaDto: CreateFacturaDto): Promise<Factura> {
-    const { detallesFactura, id_user, id_metodopago, ...facturaData } =
-      createFacturaDto;
+    const {
+      detallesFactura,
+      id_user,
+      id_metodo_pago: id_metodo_pago,
+      ...facturaData
+    } = createFacturaDto;
 
     const user = await this.userRepository.findOne({
       where: { id_usuario: id_user },
     });
     const metodoPago = await this.metodosPagoRepository.findOneBy({
-      id_metodopago,
+      id_metodo_pago: id_metodo_pago,
     });
 
     const factura = this.facturasRepository.create({
