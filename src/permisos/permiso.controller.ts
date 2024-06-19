@@ -59,4 +59,9 @@ export class PermisoController {
       nombre_permiso,
     );
   }
+
+  @Get('/rol/:nombre')
+  async getMenusByRoleName(@Param('nombre') nombre: string) {
+    return await this.permisosService.getMenusPermisosByRol(nombre);
+  }
 }

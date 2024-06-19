@@ -9,6 +9,6 @@ export class PermisoEntity {
   @Column()
   nombre: string;
 
-  @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.id_rol_menu_permiso)
+  @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.permiso)
   roles_menus_permisos: RolMenuPermisoEntity[];
 }
