@@ -102,4 +102,33 @@ export class PermisoService {
 
     await this.rolMenuPermisoRepository.save(rol_menu_permiso);
   }
+
+  async getMenusPermisosByRol(nombre: string) {
+    const rol = await this.rolRepository.findOne({
+      where: { nombre },
+    });
+
+    if (!rol) {
+      throw new NotFoundException('No existe el rol');
+    }
+
+    const menus = await this.menuRepository.find({
+      where: { roles_menus: { rol } },
+      relations: [
+        'roles_menus',
+        'roles_menus.roles_menus_permisos',
+        'roles_menus.roles_menus_permisos.permiso',
+      ],
+    });
+
+    // const rol_menu_permiso = await this.rolMenuPermisoRepository.find({
+    //   where: { rol_menu: { rol } },
+    // });
+
+    if (menus.length == 0) {
+      throw new NotFoundException('El rol no tiene menus');
+    }
+
+    return { rol: rol.nombre, menus: menus };
+  }
 }

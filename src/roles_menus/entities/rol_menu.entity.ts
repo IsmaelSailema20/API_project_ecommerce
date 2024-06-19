@@ -22,6 +22,6 @@ export class RolMenuEntity {
   @JoinColumn({ name: 'id_menu' })
   menu: MenuEntity;
 
-  @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.id_rol_menu_permiso)
+  @OneToMany(() => RolMenuPermisoEntity, (rmp) => rmp.rol_menu)
   roles_menus_permisos: RolMenuPermisoEntity[];
 }
