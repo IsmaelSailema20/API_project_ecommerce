@@ -11,6 +11,8 @@ import { CreateCarritoComprasDto } from './dtos/create-carrito_compras.dto';
 import { CarritoComprasEntity } from './entities/carrito_compras.entity';
 import { ProductosEntity } from 'src/productos/entities/productos.entity';
 import { UpdateCarritoCompras } from './dtos/update-carrito_compras.dto';
+import { UpdateCarritoEstadoDto } from './dtos/update-estado-carrito_compras.dto';
+import { UpdateProductoCarritoDto } from './dtos/update-Cantidad-Productos-carrito.dto';
 
 @Injectable()
 export class CarritoComprasService {
@@ -40,13 +42,13 @@ export class CarritoComprasService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    // Verificar si el usuario ya tiene un carrito activo
+    // Verificar si el usuario ya tiene un carrito
     const carritoExistente = await this.carritoComprasRepository.findOne({
-      where: { usuario: user, estado: 'ACT' },
+      where: { usuario: user },
     });
 
     if (carritoExistente) {
-      throw new BadRequestException('El usuario ya tiene un carrito activo');
+      throw new BadRequestException('El usuario ya tiene un carrito creado ');
     }
 
     // Crear el carrito
@@ -85,6 +87,12 @@ export class CarritoComprasService {
           );
         }
 
+        if (productosCarritoDto.cantidad > producto.stock) {
+          throw new BadRequestException(
+            `Producto con id ${productosCarritoDto.id_producto} no tiene el stock suficiente`,
+          );
+        }
+
         const productoCarrito = this.productoCarritoRepository.create({
           ...productosCarritoDto,
           producto,
@@ -102,17 +110,19 @@ export class CarritoComprasService {
 
   async getAllCarritos() {
     const carritosCompras = await this.carritoComprasRepository.find({
-      relations: ['usuario', 'productosCarrito'],
+      relations: ['usuario', 'productosCarrito', 'productosCarrito.producto'],
     });
     return { carritosCompras };
   }
+
   async getCarritoById(id_carrito_compras: number) {
     const carritosCompras = await this.carritoComprasRepository.findOne({
       where: { id_carrito: id_carrito_compras },
-      relations: ['usuario', 'productosCarrito'],
+      relations: ['usuario', 'productosCarrito', 'productosCarrito.producto'],
     });
     return { carritosCompras };
   }
+
   async addProductosToCarrito(
     addProductosCarrito: UpdateCarritoCompras,
   ): Promise<CarritoComprasEntity> {
@@ -127,14 +137,14 @@ export class CarritoComprasService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    // Encontrar el carrito activo del usuario
+    // Encontrar el carrito del usuario
     const carritoCompras = await this.carritoComprasRepository.findOne({
-      where: { usuario: user, estado: 'ACT' },
+      where: { usuario: user },
       relations: ['productosCarrito', 'productosCarrito.producto'],
     });
 
     if (!carritoCompras) {
-      throw new NotFoundException('No hay un carrito activo para este usuario');
+      throw new NotFoundException('No hay un carrito para este usuario');
     }
 
     const productosSet = new Set<number>(
@@ -167,18 +177,94 @@ export class CarritoComprasService {
           );
         }
 
+        if (productosCarritoDto.cantidad > producto.stock) {
+          throw new BadRequestException(
+            `Producto con id ${productosCarritoDto.id_producto} no tiene el stock suficiente`,
+          );
+        }
+
         const productoCarrito = this.productoCarritoRepository.create({
           ...productosCarritoDto,
           producto: producto,
           carritoCompras: carritoCompras,
         });
-
         return this.productoCarritoRepository.save(productoCarrito);
       }),
     );
 
     carritoCompras.productosCarrito.push(...nuevosProductosCarrito);
+    carritoCompras.estado = 'ACT';
 
     return this.carritoComprasRepository.save(carritoCompras);
+  }
+
+  // Método para actualizar el estado del carrito y eliminar productos si está desactivado
+  async updateCarritoEstado(
+    id_carrito: number,
+    updateCarritoEstadoDto: UpdateCarritoEstadoDto,
+  ): Promise<CarritoComprasEntity> {
+    const { estado } = updateCarritoEstadoDto;
+
+    // Encontrar el carrito por ID
+    const carritoCompras = await this.carritoComprasRepository.findOne({
+      where: { id_carrito: id_carrito },
+      relations: ['productosCarrito'],
+    });
+
+    if (!carritoCompras) {
+      throw new NotFoundException('Carrito no encontrado');
+    }
+
+    // Actualizar el estado del carrito
+    carritoCompras.estado = estado;
+
+    if (estado === 'DESC') {
+      // Eliminar productos del carrito
+      const productosCarrito = carritoCompras.productosCarrito;
+      await this.productoCarritoRepository.remove(productosCarrito);
+      carritoCompras.productosCarrito = [];
+    }
+
+    return this.carritoComprasRepository.save(carritoCompras);
+  }
+
+  // Método para actualizar la cantidad de productos en el carrito
+  async updateProductoCantidad(
+    id_carrito: number,
+    updateProductoCarritoDto: UpdateProductoCarritoDto,
+  ): Promise<ProductosCarritoComprasEntity> {
+    const { id_producto, cantidad } = updateProductoCarritoDto;
+
+    // Encontrar el carrito por ID
+    const carritoCompras = await this.carritoComprasRepository.findOne({
+      where: { id_carrito: id_carrito },
+      relations: ['productosCarrito'],
+    });
+
+    if (!carritoCompras) {
+      throw new NotFoundException('Carrito no encontrado');
+    }
+
+    // Encontrar el producto en el carrito
+    const productoCarrito = await this.productoCarritoRepository.findOne({
+      where: {
+        carritoCompras: carritoCompras,
+        producto: { id_producto: id_producto },
+      },
+      relations: ['producto', 'carritoCompras'],
+    });
+
+    if (!productoCarrito) {
+      throw new NotFoundException('Producto no encontrado en el carrito');
+    }
+    if (updateProductoCarritoDto.cantidad > productoCarrito.producto.stock) {
+      throw new BadRequestException(
+        `Producto con id ${updateProductoCarritoDto.id_producto} no tiene el stock suficiente`,
+      );
+    }
+    // Actualizar la cantidad del producto en el carrito
+    productoCarrito.cantidad = cantidad;
+
+    return this.productoCarritoRepository.save(productoCarrito);
   }
 }
