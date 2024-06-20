@@ -53,11 +53,18 @@ export class PermisoController {
     @Query('nombre_rol') nombre_rol: string,
     @Query('nombre_permiso') nombre_permiso: string,
   ) {
-    await this.permisosService.addPermisoToRolMenu(
-      nombre_menu,
-      nombre_rol,
-      nombre_permiso,
-    );
+    try {
+      await this.permisosService.addPermisoToRolMenu(
+        nombre_menu,
+        nombre_rol,
+        nombre_permiso,
+      );
+      return {
+        mensaje: `Se agrego el permiso ${nombre_permiso} al menú ${nombre_menu} del rol ${nombre_rol}`,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get('/rol/:nombre')

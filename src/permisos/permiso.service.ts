@@ -121,14 +121,19 @@ export class PermisoService {
       ],
     });
 
-    // const rol_menu_permiso = await this.rolMenuPermisoRepository.find({
-    //   where: { rol_menu: { rol } },
-    // });
-
     if (menus.length == 0) {
       throw new NotFoundException('El rol no tiene menus');
     }
 
-    return { rol: rol.nombre, menus: menus };
+    const resultado = menus.map((menu) => {
+      return {
+        nombre: menu.nombre,
+        permisos: menu.roles_menus.flatMap((rol_menu) =>
+          rol_menu.roles_menus_permisos.map((rmp) => rmp.permiso.nombre),
+        ),
+      };
+    });
+
+    return { rol: rol.nombre, menus: resultado };
   }
 }
