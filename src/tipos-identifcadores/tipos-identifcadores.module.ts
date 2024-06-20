@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TiposIdentificacionEntity } from 'src/tipos-identifcadores/entities/tipos-identificacion.entity';
 import { MenuEntity } from 'src/menus/entities/menu.entity';
 import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
+import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
       TiposIdentificacionEntity,
       MenuEntity,
       RolMenuEntity,
+      PermisoEntity,
     ]),
   ],
   controllers: [TiposIdentifcadoresController],

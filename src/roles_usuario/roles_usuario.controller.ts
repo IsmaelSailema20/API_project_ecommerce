@@ -6,6 +6,7 @@ import { RolesUsuarioService } from './roles_usuario.service';
 @Controller('rolesUsuario')
 export class RolesUsuarioController {
   constructor(private readonly rolesUsuarioService: RolesUsuarioService) {}
+
   @Get()
   async getAllRolesUsers() {
     return this.rolesUsuarioService.getAllRolesUser();

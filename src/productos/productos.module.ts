@@ -7,6 +7,7 @@ import { MarcasEntity } from 'src/marcas/entities/marcas.entity';
 import { CategoriasEntity } from 'src/categorias/entities/categorias.entity';
 import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
 import { MenuEntity } from 'src/menus/entities/menu.entity';
+import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MenuEntity } from 'src/menus/entities/menu.entity';
       CategoriasEntity,
       MenuEntity,
       RolMenuEntity,
+      PermisoEntity,
     ]),
   ],
   providers: [ProductosService],

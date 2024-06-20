@@ -16,6 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -25,27 +26,43 @@ export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 
   @Get()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getAllProducts() {
     return this.productosService.getAllProducts();
   }
+
   @Get('estadoPro')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getProductsByEstado(@Query('estadoPro') estado: string) {
     return this.productosService.getProductosAct(estado);
   }
+
   @Get('stock/:id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getStockProducto(@Param('id') id: number) {
     return this.productosService.getStrockProduc(id);
   }
+
   @Get('totalPCategoria')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getTotalProduCategoria() {
     return this.productosService.getCantidadProductosByCategoria();
   }
+
   @Get(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getOneProduct(@Param('id') id: number) {
     return this.productosService.getOneProducts(id);
   }
 
   @Post()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'CREAR')
   async createProduct(@Body() createProductDto: CreateProductosDto) {
     const newProduct =
       await this.productosService.createProducts(createProductDto);
@@ -57,6 +74,8 @@ export class ProductosController {
   }
 
   @Put(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'EDITAR')
   async updateMarca(
     @Param('id') id: number,
     @Body() updateProductosDto: UpdateProductDto,
@@ -76,6 +95,8 @@ export class ProductosController {
   }
 
   @Patch(':id/estado')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'EDITAR')
   async updateProductEstado(
     @Param('id') id: number,
     @Body() updateProductDto: UpdateProductDto,

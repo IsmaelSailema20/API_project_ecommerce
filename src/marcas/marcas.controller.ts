@@ -25,14 +25,14 @@ export class MarcasController {
 
   @Get()
   @UseGuards(PermisoAccessGuard)
-  @SetMetadata('permiso', 'OBTENER')
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getAllMarcas() {
     return this.marcasServices.getAllMarcas();
   }
 
   @Get(':id')
   @UseGuards(PermisoAccessGuard)
-  @SetMetadata('permiso', 'OBTENER')
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getOneMarca(@Param('id') id: number) {
     return this.marcasServices.getOneMarca(id);
   }
@@ -50,6 +50,8 @@ export class MarcasController {
   }
 
   @Put(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'EDITAR')
   async updateMarca(
     @Param('id') id: number,
     @Body() updateMarcaDto: UpdateMarcasDto,
