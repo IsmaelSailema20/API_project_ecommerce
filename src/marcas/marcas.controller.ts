@@ -14,6 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UpdateMarcasDto } from './dtos/update-marcas.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
 
 @ApiTags('Marcas')
 @Controller('marcas')
@@ -23,15 +24,22 @@ export class MarcasController {
   constructor(private readonly marcasServices: MarcasService) {}
 
   @Get()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'OBTENER')
   async getAllMarcas() {
     return this.marcasServices.getAllMarcas();
   }
+
   @Get(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'OBTENER')
   async getOneMarca(@Param('id') id: number) {
     return this.marcasServices.getOneMarca(id);
   }
 
   @Post()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'CREAR')
   async createMarcas(@Body() createMarcasDto: CreateMarcasDto) {
     const newMarca = await this.marcasServices.createMarca(createMarcasDto);
     if (newMarca.success) {
