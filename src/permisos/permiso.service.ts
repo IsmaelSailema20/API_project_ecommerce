@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
@@ -64,7 +68,7 @@ export class PermisoService {
     nombre_menu: string,
     nombre_rol: string,
     nombre_permiso: string,
-  ): Promise<void> {
+  ): Promise<string> {
     // Buscar el menú por nombre
     const menu = await this.menuRepository.findOne({
       where: { nombre: nombre_menu },
@@ -96,11 +100,28 @@ export class PermisoService {
       throw new NotFoundException('La relacion del rol y menu no existe');
     }
 
+    const rol_menu_permisoExists = await this.rolMenuPermisoRepository.findOne({
+      where: { rol_menu, permiso },
+    });
+
+    if (rol_menu_permisoExists) {
+      if (rol_menu_permisoExists.estado === 'ACT') {
+        return `El permiso ${nombre_permiso} con menú ${nombre_menu} del rol ${nombre_rol} ya existe`;
+      } else if (rol_menu_permisoExists.estado === 'DES') {
+        rol_menu_permisoExists.estado = 'ACT';
+        await this.rolMenuPermisoRepository.save(rol_menu_permisoExists);
+        return `El permiso ${nombre_permiso} con menú ${nombre_menu} del rol ${nombre_rol} paso a activo`;
+      }
+    }
+
     const rol_menu_permiso = new CreateRolMenuPermiso();
     rol_menu_permiso.permiso = permiso;
     rol_menu_permiso.rol_menu = rol_menu;
+    rol_menu_permiso.estado = 'ACT';
 
     await this.rolMenuPermisoRepository.save(rol_menu_permiso);
+
+    return `Se agrego el permiso ${nombre_permiso} al menú ${nombre_menu} del rol ${nombre_rol}`;
   }
 
   async getMenusPermisosByRol(nombre: string) {
@@ -127,13 +148,77 @@ export class PermisoService {
 
     const resultado = menus.map((menu) => {
       return {
+        id_menu: menu.id_menu,
         nombre: menu.nombre,
         permisos: menu.roles_menus.flatMap((rol_menu) =>
-          rol_menu.roles_menus_permisos.map((rmp) => rmp.permiso.nombre),
+          rol_menu.roles_menus_permisos.map((rmp) => ({
+            nombre: rmp.permiso.nombre,
+            estado: rmp.estado,
+          })),
         ),
       };
     });
 
-    return { rol: rol.nombre, menus: resultado };
+    const rolOutput = {
+      id_rol: rol.id_rol,
+      nombre: rol.nombre,
+      menus: resultado,
+    };
+
+    return { rol: rolOutput };
+  }
+
+  async cambiarEstadoPermiso(
+    estado: string,
+    nombre_menu: string,
+    nombre_rol: string,
+    nombre_permiso: string,
+  ): Promise<string> {
+    if (estado !== 'ACT' && estado !== 'DES') {
+      throw new ConflictException(
+        'El estado debe ser "ACT" para activo y "DES" para desactivo',
+      );
+    }
+
+    const menu = await this.menuRepository.findOne({
+      where: { nombre: nombre_menu },
+    });
+    if (!menu) {
+      throw new NotFoundException('El menú no existe');
+    }
+
+    // Buscar el rol por nombre
+    const rol = await this.rolRepository.findOne({
+      where: { nombre: nombre_rol },
+    });
+    if (!rol) {
+      throw new NotFoundException('El rol no existe');
+    }
+
+    const permiso = await this.permisoRepository.findOne({
+      where: { nombre: nombre_permiso },
+    });
+    if (!permiso) {
+      throw new NotFoundException('El permiso no existe');
+    }
+
+    const rol_menu = await this.rolMenuRepository.findOne({
+      where: { rol, menu },
+    });
+
+    if (!rol_menu) {
+      throw new NotFoundException('La relacion del rol y menu no existe');
+    }
+
+    const rol_menu_permisoExists = await this.rolMenuPermisoRepository.findOne({
+      where: { rol_menu, permiso },
+    });
+
+    if (rol_menu_permisoExists) {
+      rol_menu_permisoExists.estado = estado;
+      await this.rolMenuPermisoRepository.save(rol_menu_permisoExists);
+      return `El permiso ${nombre_permiso} con menú ${nombre_menu} del rol ${nombre_rol} cambio de estado`;
+    }
+    return `El permiso ${nombre_permiso} con menú ${nombre_menu} del rol ${nombre_rol} no existe`;
   }
 }

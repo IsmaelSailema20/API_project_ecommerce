@@ -54,7 +54,10 @@ export class PermisoAccessGuard implements CanActivate {
       where: {
         rol: { nombre: In(user.roles) },
         menu: { nombre: menuName },
-        roles_menus_permisos: { permiso: { nombre: permisoName } },
+        roles_menus_permisos: {
+          permiso: { nombre: permisoName },
+          estado: 'ACT',
+        },
       },
       relations: ['roles_menus_permisos', 'roles_menus_permisos.permiso'],
     });
