@@ -7,6 +7,7 @@ import { RolesEntity } from 'src/roles/entities/roles.entity';
 import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
 import { MenuEntity } from 'src/menus/entities/menu.entity';
 import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
+import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
       RolesUsuarioEntity,
       MenuEntity,
       RolMenuEntity,
+      PermisoEntity,
     ]),
   ],
   controllers: [UserController],

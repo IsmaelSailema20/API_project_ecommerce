@@ -7,27 +7,40 @@ import {
   Delete,
   Put,
   Query,
+  SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
 import { PermisoService } from './permiso.service';
 import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
 import { UpdatePermisoDto } from './dtos/update-permiso.dto';
 import { CreatePermisoDto } from './dtos/create-permiso.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
+import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
 
 @Controller('permiso')
+@UseGuards(JwtAuthGuard, MenuAccessGuard)
+@SetMetadata('menu', 'PERMISOS')
 export class PermisoController {
   constructor(private readonly permisosService: PermisoService) {}
 
   @Get()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async findAll(): Promise<PermisoEntity[]> {
     return await this.permisosService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async findOne(@Param('id') id: number): Promise<PermisoEntity> {
     return await this.permisosService.findOne(id);
   }
 
   @Post()
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'CREAR')
   async create(
     @Body() createPermisoDto: CreatePermisoDto,
   ): Promise<PermisoEntity> {
@@ -35,6 +48,8 @@ export class PermisoController {
   }
 
   @Put(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'EDITAR')
   async update(
     @Param('id') id: number,
     @Body() updatePermisoDto: UpdatePermisoDto,
@@ -43,11 +58,15 @@ export class PermisoController {
   }
 
   @Delete(':id')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'ELIMINAR')
   async remove(@Param('id') id: number): Promise<void> {
     return await this.permisosService.remove(id);
   }
 
   @Post('/rol-menu')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'CREAR')
   async addPermisoToRolMenu(
     @Query('nombre_menu') nombre_menu: string,
     @Query('nombre_rol') nombre_rol: string,
@@ -68,6 +87,8 @@ export class PermisoController {
   }
 
   @Get('/rol/:nombre')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'VISUALIZAR')
   async getMenusByRoleName(@Param('nombre') nombre: string) {
     return await this.permisosService.getMenusPermisosByRol(nombre);
   }

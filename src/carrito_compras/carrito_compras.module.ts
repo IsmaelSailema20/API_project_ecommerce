@@ -6,6 +6,9 @@ import { CarritoComprasEntity } from './entities/carrito_compras.entity';
 import { ProductosCarritoComprasEntity } from 'src/productos_carritos_compras/entities/productos_carrito_compras.entity';
 import { UserEntity } from 'src/user/entities';
 import { ProductosEntity } from 'src/productos/entities/productos.entity';
+import { MenuEntity } from 'src/menus/entities/menu.entity';
+import { PermisoEntity } from 'src/permisos/entities/permiso.entity';
+import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { ProductosEntity } from 'src/productos/entities/productos.entity';
       ProductosCarritoComprasEntity,
       UserEntity,
       ProductosEntity,
+      MenuEntity,
+      RolMenuEntity,
+      PermisoEntity,
     ]),
   ],
   providers: [CarritoComprasService],
