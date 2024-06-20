@@ -20,5 +20,6 @@ import { RolMenuEntity } from 'src/roles_menus/entities/rol_menu.entity';
   ],
   controllers: [PermisoController],
   providers: [PermisoService],
+  exports: [TypeOrmModule],
 })
 export class PermisoModule {}

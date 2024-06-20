@@ -39,7 +39,7 @@ import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
         database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
         entities: [__dirname + '/**/**/*entity{.ts,.js}'],
         synchronize: false,
-        logging: true,
+        // logging: true,
       }),
     }),
 
@@ -47,6 +47,7 @@ import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+
     UserModule,
     TiposIdentifcadoresModule,
     AuthModule,

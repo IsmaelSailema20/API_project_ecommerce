@@ -55,7 +55,14 @@ export class MenuController {
     @Query('nombre_menu') nombre_menu: string,
     @Query('nombre_rol') nombre_rol: string,
   ) {
-    await this.menuService.addMenuToRole(nombre_menu, nombre_rol);
+    try {
+      await this.menuService.addMenuToRole(nombre_menu, nombre_rol);
+      return {
+        mensaje: `Se agrego el menú ${nombre_menu} al rol ${nombre_rol}`,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get('/rol/:nombre')
