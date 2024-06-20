@@ -73,13 +73,38 @@ export class PermisoController {
     @Query('nombre_permiso') nombre_permiso: string,
   ) {
     try {
-      await this.permisosService.addPermisoToRolMenu(
+      const mensaje = await this.permisosService.addPermisoToRolMenu(
         nombre_menu,
         nombre_rol,
         nombre_permiso,
       );
       return {
-        mensaje: `Se agrego el permiso ${nombre_permiso} al menú ${nombre_menu} del rol ${nombre_rol}`,
+        mensaje,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Put('/estado/:estado')
+  @UseGuards(PermisoAccessGuard)
+  @SetMetadata('permiso', 'ELIMINAR')
+  async cambiarEstadoPermiso(
+    @Param('estado') estado: string,
+    @Query('nombre_menu') nombre_menu: string,
+    @Query('nombre_rol') nombre_rol: string,
+    @Query('nombre_permiso') nombre_permiso: string,
+  ) {
+    try {
+      const mensaje = await this.permisosService.cambiarEstadoPermiso(
+        estado,
+        nombre_menu,
+        nombre_rol,
+        nombre_permiso,
+      );
+      return {
+        mensaje,
+        estado,
       };
     } catch (error) {
       throw error;
