@@ -24,6 +24,8 @@ import { FacturasModule } from 'src/facturas/facturas.module';
 import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
 import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
 import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
+import { PromocionesModule } from './promociones/promociones.module';
+import { ProductosPromocionesModule } from './productos_promociones/productos_promociones.module';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
     DetallesFacturaModule,
     MetodosPagoModule,
     CarritoComprasModule,
+    PromocionesModule,
+    ProductosPromocionesModule,
   ],
   controllers: [],
 })
