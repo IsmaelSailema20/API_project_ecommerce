@@ -29,6 +29,15 @@ export class Factura {
   @Column({ name: 'total_factura', type: 'decimal' })
   total_factura: number;
 
+  @Column({ name: 'impuesto', type: 'decimal' })
+  impuesto: number;
+
+  @Column({ name: 'subtotal', type: 'decimal' })
+  subtotal: number;
+
+  @Column({ type: 'varchar', length: 10 })
+  estado: string;
+
   @Column({ name: 'porcentaje_descuento', type: 'decimal' })
   porcentaje_descuento: number;
 
