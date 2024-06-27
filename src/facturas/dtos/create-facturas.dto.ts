@@ -30,6 +30,18 @@ export class CreateFacturaDto {
 
   @IsNotEmpty()
   @IsNumber()
+  impuesto: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  subtotal: number;
+
+  @IsNotEmpty()
+  @IsString()
+  estado: string;
+
+  @IsNotEmpty()
+  @IsNumber()
   id_user: number;
 
   @IsArray()
