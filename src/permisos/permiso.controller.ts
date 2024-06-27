@@ -17,7 +17,9 @@ import { CreatePermisoDto } from './dtos/create-permiso.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
 import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Permisos')
 @Controller('permiso')
 @UseGuards(JwtAuthGuard, MenuAccessGuard)
 @SetMetadata('menu', 'PERMISOS')

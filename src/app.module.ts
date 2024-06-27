@@ -21,7 +21,6 @@ import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
 import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
 import { FacturasModule } from 'src/facturas/facturas.module';
-import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
 import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
 import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
 import { PromocionesModule } from './promociones/promociones.module';
@@ -62,7 +61,6 @@ import { ProductosPromocionesModule } from './productos_promociones/productos_pr
     PermisoModule,
     NotasDeCreditoModule,
     FacturasModule,
-    DetallesFacturaModule,
     MetodosPagoModule,
     CarritoComprasModule,
     PromocionesModule,
