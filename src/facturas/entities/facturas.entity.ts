@@ -11,7 +11,7 @@ import { DetalleFactura } from 'src/detalles_factura/entities/detalles_factura.e
 import { MetodosPago } from 'src/metodos_pago/entities/metodosPago.entity';
 import { NotasDeCreditoEntity } from 'src/notas_de_credito/entities/notas_de_credito.entity';
 
-@Entity('factura')
+@Entity('facturas')
 export class Factura {
   @PrimaryGeneratedColumn()
   id_factura: number;
