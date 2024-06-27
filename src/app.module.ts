@@ -19,12 +19,13 @@ import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
 import { RolMenuModule } from './roles_menus/rol_menu.module';
 import { MenuModule } from './menus/menu.module';
 import { PermisoModule } from './permisos/permiso.module';
-import { RolMenuPermisoModule } from './roles_menus_permisos/rol_menu_permiso.module';
 import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
 import { FacturasModule } from 'src/facturas/facturas.module';
 import { DetallesFacturaModule } from 'src/detalles_factura/detalles_factura.module';
 import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
 import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
+import { PromocionesModule } from './promociones/promociones.module';
+import { ProductosPromocionesModule } from './productos_promociones/productos_promociones.module';
 
 @Module({
   imports: [
@@ -59,12 +60,13 @@ import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
     MenuModule,
     RolMenuModule,
     PermisoModule,
-    RolMenuPermisoModule,
     NotasDeCreditoModule,
     FacturasModule,
     DetallesFacturaModule,
     MetodosPagoModule,
     CarritoComprasModule,
+    PromocionesModule,
+    ProductosPromocionesModule,
   ],
   controllers: [],
 })
