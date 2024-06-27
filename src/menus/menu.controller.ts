@@ -15,10 +15,8 @@ import {
   ApiOperation,
   ApiParam,
   ApiQuery,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { MenuEntity } from './entities/menu.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
 import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
@@ -31,12 +29,7 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Obtiene todos los menus' })
-  @ApiResponse({
-    status: 200,
-    description: 'List of all menus',
-    type: [MenuEntity],
-  })
+  @ApiOperation({ summary: 'Obtiene todos los menús' })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'VISUALIZAR')
   async getAll() {
@@ -44,9 +37,8 @@ export class MenuController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create a new menu' })
-  @ApiBody({ type: CreateMenuDto, description: 'Payload to create a new menu' })
-  @ApiResponse({ status: 201, description: 'Menu created successfully' })
+  @ApiOperation({ summary: 'Crea nuevo menú' })
+  @ApiBody({ type: CreateMenuDto, description: 'Dto para crear menu' })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'CREAR')
   async create(@Body() request: CreateMenuDto) {
@@ -58,12 +50,12 @@ export class MenuController {
   @ApiQuery({
     name: 'nombre_menu',
     type: String,
-    description: 'Name of the menu to assign',
+    description: 'Nombre del menu a asignar',
   })
   @ApiQuery({
     name: 'nombre_rol',
     type: String,
-    description: 'Name of the role to assign the menu to',
+    description: 'Nombre del rol a asignar el menú',
   })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'CREAR')
@@ -82,11 +74,11 @@ export class MenuController {
   }
 
   @Get('/rol/:nombre')
-  @ApiOperation({ summary: 'Get menus by role name' })
+  @ApiOperation({ summary: 'Obtener los menus de un rol' })
   @ApiParam({
     name: 'nombre',
     type: String,
-    description: 'Name of the role to retrieve menus for',
+    description: 'Nombre del rol para obtener los menús',
   })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'VISUALIZAR')

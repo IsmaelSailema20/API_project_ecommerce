@@ -146,6 +146,9 @@ export class UserService {
       where: { username },
       relations: ['person', 'rolesUser', 'rolesUser.rol'],
     });
+    if (!user) {
+      return null;
+    }
     return this.userToGetDto(user);
   }
 
