@@ -11,12 +11,19 @@ import {
 import { MetodosPagoService } from './metodosPago.service';
 import { CreateMetodosPagoDto } from './dtos/create-metodosPago.dto';
 import { MetodosPago } from './entities/metodosPago.entity';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { MenuAccessGuard } from 'src/auth/guards/menu_access.guard';
 import { PermisoAccessGuard } from 'src/auth/guards/permiso_access.guard';
 
-@ApiTags('Metodos-de-pago')
+@ApiTags('Metodos de Pago')
+@ApiBearerAuth()
 @Controller('metodos-pago')
 @UseGuards(JwtAuthGuard, MenuAccessGuard)
 @SetMetadata('menu', 'METODOS_PAGO')
@@ -24,6 +31,11 @@ export class MetodosPagoController {
   constructor(private readonly metodosPagoService: MetodosPagoService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crea un nuevo método de pago' })
+  @ApiBody({
+    type: CreateMetodosPagoDto,
+    description: 'Dto para crear un método de pago',
+  })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'CREAR')
   create(
@@ -33,6 +45,7 @@ export class MetodosPagoController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtiene todos los métodos de pago' })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'VISUALIZAR')
   findAll(): Promise<MetodosPago[]> {
@@ -40,6 +53,12 @@ export class MetodosPagoController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtiene un método de pago por su ID' })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID del método de pago',
+  })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'VISUALIZAR')
   findOne(@Param('id') id: number): Promise<MetodosPago> {
@@ -47,6 +66,17 @@ export class MetodosPagoController {
   }
 
   @Patch(':metodoPagoId/users/:userId')
+  @ApiOperation({ summary: 'Asigna un usuario a un método de pago' })
+  @ApiParam({
+    name: 'metodoPagoId',
+    type: String,
+    description: 'ID del método de pago',
+  })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    description: 'ID del usuario',
+  })
   @UseGuards(PermisoAccessGuard)
   @SetMetadata('permiso', 'EDITAR')
   addUserToMetodoPago(
