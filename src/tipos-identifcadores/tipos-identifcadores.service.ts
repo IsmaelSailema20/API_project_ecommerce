@@ -28,27 +28,44 @@ export class TiposIdentifcadoresService {
   }
 
   async createTipoIdentif(createTipoIdentif: CreateTipoIdentfDto) {
-    const tipoIdentf = createTipoIdentif;
-
     //Verifica si el identificador ya existe a travez del nombre
-    let tipoIdentfExist = await this.tiposIdentifRepository.findOne({
-      where: { nombre: tipoIdentf.nombre },
+    const tipoIdentfExist = await this.tiposIdentifRepository.findOne({
+      where: { nombre: createTipoIdentif.nombre },
     });
 
-    if (!tipoIdentfExist) {
-      const newTipoIndentf = this.tiposIdentifRepository.create(tipoIdentf);
-      tipoIdentfExist = await this.tiposIdentifRepository.save(newTipoIndentf);
+    if (tipoIdentfExist) {
+      return {
+        success: false,
+        message: `El tipo de identificacion con el nombre ${(await tipoIdentfExist).nombre} ya existe`,
+      };
     }
-    return tipoIdentfExist;
+    const newTipoIndentf =
+      await this.tiposIdentifRepository.save(createTipoIdentif);
+    return { success: true, data: newTipoIndentf };
   }
 
   async updateTipoIdentif(
     id: number,
     updateTipoIdentifDto: UpdateTipoIdentfDto,
   ) {
-    //CONTROLAR QUE EL ID NO SE PUEDA MODFICAR?
     const tipoIdentf = await this.getOneTiposIdentificadores(id);
+
+    if (updateTipoIdentifDto.nombre) {
+      const tipoIdentfExist = await this.tiposIdentifRepository.findOne({
+        where: { nombre: updateTipoIdentifDto.nombre },
+      });
+
+      if (tipoIdentfExist && tipoIdentfExist.id_tipo_identificacion !== id) {
+        return {
+          success: false,
+          message: `El tipo de identificación con el nombre ${tipoIdentfExist.nombre} ya existe`,
+        };
+      }
+    }
+
     Object.assign(tipoIdentf, updateTipoIdentifDto);
-    return await this.tiposIdentifRepository.save(tipoIdentf);
+    const updateTipoIdentif =
+      await this.tiposIdentifRepository.save(tipoIdentf);
+    return { success: true, data: updateTipoIdentif };
   }
 }

@@ -6,8 +6,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { PersonEntity, UserEntity } from './entities';
 import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto } from './dtos';
+import { RolesEntity } from 'src/roles/entities/roles.entity';
+import { RolesUsuarioEntity } from 'src/roles_usuario/entities/roles_usuario.entity';
+import { plainToClass } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { EditUserDto } from './dtos/edite-user.dto';
+import { GetUserDto } from './dtos/get-user.dto';
 
 @Injectable()
 export class UserService {
@@ -16,13 +21,18 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PersonEntity)
     private readonly personRepository: Repository<PersonEntity>,
-  ) { }
+    @InjectRepository(RolesEntity)
+    private readonly rolesRepository: Repository<RolesEntity>,
+    @InjectRepository(RolesUsuarioEntity)
+    private readonly rolesUsuarioRepository: Repository<RolesUsuarioEntity>,
+  ) {}
 
   async getAll() {
     const users = await this.userRepository.find({
-      relations: ['person'],
+      relations: ['person', 'rolesUser', 'rolesUser.rol'],
     });
-    return { users };
+
+    return users.map((user) => this.userToGetDto(user));
   }
 
   async getById(id: number): Promise<UserEntity> {
@@ -35,8 +45,7 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { person } = createUserDto;
-
+    const { id_rol, person } = createUserDto;
     // Verificar si la información de la persona está incluida en el DTO
     if (!person) {
       throw new BadRequestException(
@@ -45,27 +54,45 @@ export class UserService {
     }
 
     // Verifica si el usuario ya existe
-    if (await this.userRepository.findOne({ where: { username: createUserDto.username } })) {
-      throw new BadRequestException(
-        'El usuario ya existe.'
-      );
+    const userExists = await this.userRepository.findOne({
+      where: { username: createUserDto.username },
+    });
+    if (userExists) {
+      throw new BadRequestException('El usuario ya existe.');
     }
 
-    // Verifica si la persona ya existe basada en la identificacion
+    // Verifica si la persona ya existe basada en la identificación
     const personaExiste = await this.personRepository.findOne({
-      where: { identificacion: person.identificacion }
-    })
+      where: { identificacion: person.identificacion },
+    });
 
-    // Si la persona no existe entonces se guarda el usuario
+    const rolExiste = await this.rolesRepository.findOneBy({ id_rol });
+    if (!rolExiste) {
+      throw new NotFoundException('El rol no existe en los registros');
+    }
+
+    let newUser;
     if (!personaExiste) {
+      // Si la persona no existe entonces se guarda el usuario
       const salt = await bcrypt.genSalt();
       createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
-      return await this.userRepository.save(createUserDto);
+      createUserDto.id_rol = rolExiste.id_rol;
+      newUser = await this.userRepository.save(createUserDto);
+    } else {
+      // Si la persona ya existe, maneja este caso como corresponda
+      throw new BadRequestException('La persona ya existe.');
     }
 
-    throw new BadRequestException(
-      `Esta persona ya esta enlazada a otro usuario.`
-    );
+    // Crear una instancia de la entidad RolesUsuarios
+    const rolesUsuario = new RolesUsuarioEntity();
+    rolesUsuario.rol = rolExiste;
+    rolesUsuario.user = newUser;
+    rolesUsuario.estado = 'act';
+
+    // Guardar la relación en la tabla de rompimiento
+    await this.rolesUsuarioRepository.save(rolesUsuario);
+
+    return newUser;
   }
 
   async updateUser(
@@ -114,8 +141,25 @@ export class UserService {
     await this.userRepository.remove(user);
   }
 
-  async getByUsername(username: string): Promise<UserEntity> {
-    return await this.userRepository.findOneBy({ username });
+  async getByUsername(username: string) {
+    const user = await this.userRepository.findOne({
+      where: { username },
+      relations: ['person', 'rolesUser', 'rolesUser.rol'],
+    });
+    if (!user) {
+      return null;
+    }
+    return this.userToGetDto(user);
   }
 
+  userToGetDto(user: UserEntity): GetUserDto {
+    const userDto = plainToClass(GetUserDto, user, {
+      excludeExtraneousValues: true,
+    });
+    const roles = user.rolesUser.map((rol) => rol.rol.nombre);
+
+    userDto.roles = roles;
+
+    return userDto;
+  }
 }

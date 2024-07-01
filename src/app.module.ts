@@ -1,10 +1,3 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -12,7 +5,26 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
 } from './constans/constans';
+import { Module } from '@nestjs/common';
+import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TiposIdentifcadoresModule } from './tipos-identifcadores/tipos-identifcadores.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ProductosModule } from './productos/productos.module';
+import { CategoriasModule } from './categorias/categorias.module';
+import { MarcasModule } from './marcas/marcas.module';
+import { RolesModule } from './roles/roles.module';
+import { RolesUsuarioModule } from './roles_usuario/roles_usuario.module';
+import { RolMenuModule } from './roles_menus/rol_menu.module';
+import { MenuModule } from './menus/menu.module';
+import { PermisoModule } from './permisos/permiso.module';
+import { NotasDeCreditoModule } from './notas_de_credito/notas_de_credito.module';
+import { FacturasModule } from 'src/facturas/facturas.module';
+import { MetodosPagoModule } from './metodos_pago/metodosPago.module';
+import { CarritoComprasModule } from './carrito_compras/carrito_compras.module';
+import { PromocionesModule } from './promociones/promociones.module';
+import { ProductosPromocionesModule } from './productos_promociones/productos_promociones.module';
 
 @Module({
   imports: [
@@ -26,7 +38,8 @@ import { AuthModule } from './auth/auth.module';
         password: config.get<string>(DATABASE_PASSWORD), // Cambia esto a tu contraseña de PostgreSQL
         database: config.get<string>(DATABASE_NAME), // Cambia esto a tu base de datos de PostgreSQL
         entities: [__dirname + '/**/**/*entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
+        // logging: true,
       }),
     }),
 
@@ -34,11 +47,25 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+
     UserModule,
     TiposIdentifcadoresModule,
-    AuthModule
+    AuthModule,
+    ProductosModule,
+    CategoriasModule,
+    MarcasModule,
+    RolesModule,
+    RolesUsuarioModule,
+    MenuModule,
+    RolMenuModule,
+    PermisoModule,
+    NotasDeCreditoModule,
+    FacturasModule,
+    MetodosPagoModule,
+    CarritoComprasModule,
+    PromocionesModule,
+    ProductosPromocionesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
 })
 export class AppModule {}

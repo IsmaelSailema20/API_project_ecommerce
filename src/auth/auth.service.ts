@@ -9,23 +9,24 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async validateUser({ username, password }: AuthPayloadDTO) {
     const findUser = await this.userService.getByUsername(username);
-
     if (!findUser) {
-      throw new UnauthorizedException('Credenciales invalidas');
+      throw new UnauthorizedException('Credenciales inválidas');
     }
 
     const isMatch = await bcrypt.compare(password, findUser.password);
-    
-    const {password: ps, person, ...user} = findUser;
-
-    if (isMatch) {
-      return this.jwtService.sign(user); // Firmar y retornar el JWT
+    if (!isMatch) {
+      throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    throw new UnauthorizedException('Credenciales invalidas');
+    // Payload sin incluir la contraseña y detalles personales
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: ps, person, ...payload } = findUser;
+
+    // Retornamos el token JWT firmado
+    return this.jwtService.sign(payload);
   }
 }
