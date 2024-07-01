@@ -8,6 +8,7 @@ import {
   Put,
   SetMetadata,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CreateRolfDto } from './dtos/create-rol-dto';
 import { UpdateRolDto } from './dtos/update-rol.dto';
@@ -77,5 +78,12 @@ export class RolesController {
   ) {
     const updateRol = await this.rolesService.updateRol(id, updateRolDto);
     return { message: 'El rol ha sido actualizado con éxito', updateRol };
+  }
+
+  async updateRol(
+    @Query('username') username: string,
+    @Query('nombreRol') nombreRol: string,
+  ) {
+    await this.rolesService.addRolToUser(username, nombreRol);
   }
 }
